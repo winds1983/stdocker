@@ -1,0 +1,7 @@
+twine
+wheel
+docker
+pyyaml
+python-dotenv
+click
+requests
