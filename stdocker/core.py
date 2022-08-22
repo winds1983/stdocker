@@ -1,118 +1,54 @@
 import os
-import docker
-import atexit
-import logging
-import os
-from subprocess import Popen  # , PIPE, STDOUT
+import dotenv
+from dotenv import load_dotenv, find_dotenv, dotenv_values
 
 
-logger = logging.getLogger(__name__)
+class EnvHandler(object):
 
+    def __init__(self, env_file=None):
+        if env_file is not None:
+            self.env_file = env_file
+        else:
+            self.env_file = self.get_env_file()
+        self.load_env()
 
-def read_dotenv(filename):
-    """Read dotenv file.
-    Parameters
-    ----------
-    filename : str
-        path to the filename
-    Returns
-    -------
-    dict
+    def load_env(self):
+        load_dotenv(self.env_file)
+
     """
-    try:
-        with open(filename, 'r') as fh:
-            data = fh.read()
-    except FileNotFoundError:
-        logger.warning(f"{filename} does not exist, continuing without "
-                       "setting environment variables.")
-        data = ""
-
-    res = {}
-    for line in data.splitlines():
-        logger.debug(line)
-
-        line = line.strip()
-
-        # ignore comments
-        if line.startswith('#'):
-            continue
-
-        # ignore empty lines or lines w/o '='
-        if '=' not in line:
-            continue
-
-        key, value = line.split('=', 1)
-
-        # allow export
-        if key.startswith('export '):
-            key = key.split(' ', 1)[-1]
-
-        key = key.strip()
-        value = value.strip()
-
-        # remove quotes (not sure if this is standard behaviour)
-        if len(value) >= 2 and value[0] == value[-1] == '"':
-            value = value[1:-1]
-            # escape escape characters
-            value = bytes(value, 'utf-8').decode('unicode-escape')
-
-        elif len(value) >= 2 and value[0] == value[-1] == "'":
-            value = value[1:-1]
-
-        res[key] = value
-    logger.debug(res)
-    return res
-
-
-def run_docker(filename, command):
-    """Run dotenv.
-    This function executes the commands with the environment variables
-    parsed from filename.
-    Parameters
-    ----------
-    filename : str
-        path to the .env file
-    command : list[str]
-        command to execute
-    Returns
-    -------
-    int
-        the return value
+    Find it under the root directory path/to/.env
     """
-    # read dotenv
-    dotenv = read_dotenv(filename)
+    def get_env_file(self):
+        env_file = find_dotenv()
+        if not os.path.exists(env_file):
+            env_file = '/opt/shinetech/stdocker/.env'
+        return env_file
 
-    # update env
-    env = os.environ.copy()
-    env.update(dotenv)
+    """
+    Retrieve all variables to OrderedDict
+    """
+    def get_values(self):
+        return dotenv_values(self.env_file)
 
-    # execute
-    proc = Popen(
-        command,
-        # stdin=PIPE,
-        # stdout=PIPE,
-        # stderr=STDOUT,
-        universal_newlines=True,
-        bufsize=0,
-        shell=False,
-        env=env,
-    )
+    """
+    Get value of single variable
+    """
+    def get_value(self, key):
+        return os.getenv(key)
 
-    def terminate_proc():
-        """Kill child process.
-        All signals should be forwarded to the child processes
-        automatically, however child processes are also free to ignore
-        some of them. With this we make sure the child processes get
-        killed once dotenv exits.
-        """
-        proc.kill()
+    """
+    Create or modify variables
+    NOTE: need to remove quotes
+        Correct: DOCUMENT_ROOT=/home/sunfeng/stdocker/www
+        Incorrect: DOCUMENT_ROOT="/home/sunfeng/stdocker/www"
+    In auto mode, don't add quotes if the value is only made of alphanumeric characters
+    https://github.com/theskumar/python-dotenv/compare/v0.17.1...v0.18.0
+    """
+    def set_value(self, key, value):
+        return dotenv.set_key(self.env_file, key, value, quote_mode='auto')
 
-    # register
-    atexit.register(terminate_proc)
 
-    _, _ = proc.communicate()
-
-    # unregister
-    atexit.unregister(terminate_proc)
-
-    return proc.returncode
+def get_env_values(working_dir):
+    env_file = working_dir + '/.env'
+    env_handler = EnvHandler(env_file=env_file)
+    return env_handler.get_values()

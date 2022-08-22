@@ -1,3 +1,3 @@
 from stdocker import cli
 
-cli.main()
+cli.cli()

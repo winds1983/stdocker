@@ -16,9 +16,13 @@ setup(
     long_description_content_type="text/markdown",
     license='MIT',
     packages=find_packages(),
+    python_requires=">=3.8",
+    extras_require={
+        'cli': ['click>=5.0', ],
+    },
     entry_points={
         'console_scripts': [
-            'gfg = stdocker.cli:main'
+            'stdocker=stdocker.cli:main'
         ]
     },
     classifiers=(
@@ -27,7 +31,6 @@ setup(
         "Operating System :: OS Independent",
     ),
     keywords='python package stdocker shinetech docker',
-    python_requires='>=3.8',
     install_requires=requirements,
     zip_safe=False
 )
