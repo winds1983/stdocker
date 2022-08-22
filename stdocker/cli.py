@@ -4,7 +4,7 @@ import shlex
 import sys
 from subprocess import Popen
 from typing import Any, Dict, List
-from core import get_env_values
+from .core import get_env_values
 
 try:
     import click
@@ -13,9 +13,8 @@ except ImportError:
                      'Run pip install "stdocker[cli]" to fix this.')
     sys.exit(1)
 
-# from .main import dotenv_values, get_key, set_key, unset_key
-# from .version import __version__
-__version__ = '1.0.0'
+from .version import __version__
+# __version__ = '1.0.0'
 
 
 @click.group()
@@ -65,8 +64,7 @@ def restart(ctx: click.Context, service: Any) -> None:
 
 @cli.command()
 @click.pass_context
-@click.argument('env', required=True)
-def configure(ctx: click.Context, env: Any) -> None:
+def configure(ctx: click.Context) -> None:
     """Configure local environment, will guide you through creating your .env and docker-compose.yml."""
     os.system('python3 install/configurator.py')
 
@@ -172,5 +170,9 @@ def init_project(ctx: click.Context, platform: Any, name: Any) -> None:
     os.system('sh bin/init_project.sh ' + platform + ' ' + name)
 
 
-if __name__ == '__main__':
+def main():
     cli()
+
+
+if __name__ == '__main__':
+    main()
