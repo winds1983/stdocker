@@ -2,7 +2,7 @@ import os
 import sys
 import re
 from typing import Any, Dict, List
-from .core import get_env_values
+from .core import get_env_values, list_envs
 
 try:
     import click
@@ -13,6 +13,7 @@ except ImportError:
 
 from .version import __version__
 
+install_dir = '/opt/shinetech/stdocker'
 
 """
 Check if project name is valid
@@ -29,15 +30,16 @@ def check_project_name(ctx, param, value):
 
 
 @click.group()
-@click.option('-d', '--working-dir', default='/opt/shinetech/stdocker',
+@click.option('-d', '--working-dir', default=install_dir,
               type=click.Path(dir_okay=True),
-              help="Location of the installation directory, defaults to /opt/shinetech/stdocker.")
+              help="Location of the installation directory, defaults to " + install_dir + ".")
 @click.version_option(version=__version__)
 @click.pass_context
 def cli(ctx: click.Context, working_dir: Any) -> None:
     """Shinetech Docker CLI"""
     ctx.obj = {}
     ctx.obj['WORKING_DIR'] = working_dir
+    # All scripts will based on working dir to run
     os.chdir(working_dir)  # Debug directory: /var/www/html/Shinetech/shinetech-docker
 
 
@@ -83,9 +85,8 @@ def configure(ctx: click.Context) -> None:
 @cli.command()
 @click.pass_context
 @click.option('--env', default='magento_244',
-              type=click.Choice(['magento_244', 'json', 'shell', 'export']),
-              help="The format in which to display the list. Default format is simple, "
-                   "which displays name=value without quotes.")
+              type=click.Choice(list_envs(install_dir)),
+              help="Build the development environment based on the specified configuration.")
 def build(ctx: click.Context, env: Any) -> None:
     """Build local development environment with your configuration"""
     os.system('sh builder.sh ' + env)

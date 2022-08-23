@@ -51,7 +51,26 @@ class EnvHandler(object):
 """
 Get all env configs
 """
-def get_env_values(working_dir):
-    env_file = working_dir + '/.env'
+def get_env_values(install_dir):
+    env_file = install_dir + '/.env'
     env_handler = EnvHandler(env_file=env_file)
     return env_handler.get_values()
+
+"""
+List all environments
+"""
+def list_envs(install_dir):
+    custom_env_dir = install_dir + '/var/env'
+    predefined_env_dir = install_dir + '/config/env/templates'
+
+    custom_env_files = os.listdir(custom_env_dir)
+    predefined_env_files = os.listdir(predefined_env_dir)
+    env_files = predefined_env_files + custom_env_files
+
+    envs = []
+    for env_file in env_files:
+        if env_file != '.gitkeep':
+            env = env_file.split('.')
+            envs.append(env[0])
+
+    return envs
