@@ -37,11 +37,29 @@ To avoid this situation, use Test PyPI to perform and check your upload first, b
 
 #### Solution
 
-Update a new version then re-upload
+Update a new version and empty /dist/* then re-upload
 
+```shell
+sudo rm -fr dist/*
+python3 setup.py sdist bdist_wheel
+twine upload --repository pypi dist/*
+```
 
 * [Why am I getting a "Filename or contents already exists" or "Filename has been previously used" error?](https://pypi.org/help/#file-name-reuse)
 
+
+### ERROR: Could not find a version that satisfies the requirement
+
+```
+ERROR: Could not find a version that satisfies the requirement stdocker==1.0.1 (from versions: none)
+ERROR: No matching distribution found for stdocker==1.0.1
+```
+
+#### Solution
+
+```shell
+python3 -m pip install stdocker==1.0.1
+```
 
 ## Reference
 
