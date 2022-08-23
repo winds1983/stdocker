@@ -1,8 +1,6 @@
-import json
 import os
-import shlex
 import sys
-from subprocess import Popen
+import re
 from typing import Any, Dict, List
 from .core import get_env_values
 
@@ -10,11 +8,24 @@ try:
     import click
 except ImportError:
     sys.stderr.write('It seems stdocker is not installed with cli option. \n'
-                     'Run pip install "stdocker[cli]" to fix this.')
+                     'Run pip3 install "stdocker[cli]" to fix this.')
     sys.exit(1)
 
 from .version import __version__
-# __version__ = '1.0.0'
+
+
+"""
+Check if project name is valid
+"""
+def check_project_name(ctx, param, value):
+    pattern = re.compile('^[a-zA-Z][0-9a-zA-Z]{0,50}$')
+    matched = pattern.match(value)
+    if matched is None:
+        click.echo(
+            click.style(f"Invalid project name: Limit length to 1-50 characters (1 character in front + up to 49 characters in back)",
+                        fg='red'))
+        ctx.abort()
+    return value
 
 
 @click.group()
@@ -58,7 +69,7 @@ def compose(ctx: click.Context, command: Any) -> None:
 @click.pass_context
 @click.argument('service', required=True)
 def restart(ctx: click.Context, service: Any) -> None:
-    """Restart docker service"""
+    """Restart specified docker service"""
     os.system('sudo docker-compose restart ' + service)
 
 
@@ -76,13 +87,13 @@ def configure(ctx: click.Context) -> None:
               help="The format in which to display the list. Default format is simple, "
                    "which displays name=value without quotes.")
 def build(ctx: click.Context, env: Any) -> None:
-    """Build local environment."""
+    """Build local development environment with your configuration"""
     os.system('sh builder.sh ' + env)
 
 
 @cli.command()
 @click.pass_context
-def launch(ctx: click.Context) -> None:
+def start(ctx: click.Context) -> None:
     """Launch docker services"""
     click.echo(click.style(f"Start to launch docker services", fg='cyan'))
     os.system('sh bin/launch.sh')
@@ -122,21 +133,23 @@ def database(ctx: click.Context, action: Any, dbname: Any, backup_sql_file: Any)
 @click.pass_context
 @click.argument('service', required=True)
 def ssh(ctx: click.Context, service: Any) -> None:
-    """SSH login to the specified server"""
+    """Log in to the specified server using SSH"""
     os.system('sh bin/ssh.sh ' + service)
 
 
 @cli.command()
 @click.pass_context
-def upgrade(ctx: click.Context) -> None:
+@click.option('--target_version',
+              help="Specify the target version to upgrade. e.g: 1.0.1")
+def upgrade(ctx: click.Context, target_version: Any) -> None:
     """Upgrade Shinetech Docker"""
-    os.system('sh bin/upgrade.sh')
+    os.system('sh bin/upgrade.sh ' + target_version)
 
 
 @cli.command()
 @click.pass_context
 def about(ctx: click.Context) -> None:
-    """Show the local env and workspace information"""
+    """Show the local environment and workspace information"""
     working_dir = ctx.obj['WORKING_DIR']
     env_values = get_env_values(working_dir)
 
@@ -161,13 +174,18 @@ def about(ctx: click.Context) -> None:
 @click.pass_context
 @click.option('--platform', required=True, default='magento2',
               type=click.Choice(['magento2', 'symfony', 'laravel', 'yii', 'wordpress']),
-              help="Specify the database name to export or import.")
+              help="Specifies the framework used by the project.")
 @click.option('--name', required=True,
-              help="Specifies the SQL file path for database backup, "
-                   "which is placed in the var directory of docker by default.")
-def init_project(ctx: click.Context, platform: Any, name: Any) -> None:
-    """Export or import database"""
-    os.system('sh bin/init_project.sh ' + platform + ' ' + name)
+              callback=check_project_name,
+              help="Specify project name.")
+@click.option('--country', required=False,
+              help="Build project by country, such as HP project have multiple independent countries and regions.")
+def init_project(ctx: click.Context, platform: Any, name: Any, country: Any) -> None:
+    """Initial the project"""
+    if country is None:
+        os.system('sh bin/init_project.sh ' + platform + ' ' + name)
+    else:
+        os.system('sh bin/init_project.sh ' + platform + ' ' + name + ' ' + country)
 
 
 def main():

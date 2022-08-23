@@ -48,6 +48,9 @@ class EnvHandler(object):
         return dotenv.set_key(self.env_file, key, value, quote_mode='auto')
 
 
+"""
+Get all env configs
+"""
 def get_env_values(working_dir):
     env_file = working_dir + '/.env'
     env_handler = EnvHandler(env_file=env_file)
