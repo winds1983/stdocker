@@ -1,6 +1,11 @@
 Shinetech Docker CLI
 ===
 
+```bash
+stdocker start
+stdocker -d /var/www/html/Shinetech/shinetech-docker start
+```
+
 A more intelligent, user-friendly and advanced configurable local development environment built with Docker.
 
 1. Create your Command Line Script.
@@ -17,6 +22,11 @@ A more intelligent, user-friendly and advanced configurable local development en
 * [Python中使用setup.py和console_scripts参数创建安装包和shell命令](https://blog.csdn.net/lslxdx/article/details/73131664)
 * [命令行脚本](https://python-packaging-zh.readthedocs.io/zh_CN/latest/command-line-scripts.html#scripts)
 * [Python Apps the Right Way: entry points and scripts](https://chriswarrick.com/blog/2014/09/15/python-apps-the-right-way-entry_points-and-scripts/)
+
+
+```bash
+sudo python3 setup.py install
+```
 
 
 ```bash

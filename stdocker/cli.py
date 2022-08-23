@@ -14,6 +14,7 @@ except ImportError:
 from .version import __version__
 
 install_dir = '/opt/shinetech/stdocker'
+current_dir = os.getcwd()
 
 """
 Check if project name is valid
@@ -39,6 +40,7 @@ def cli(ctx: click.Context, working_dir: Any) -> None:
     """Shinetech Docker CLI"""
     ctx.obj = {}
     ctx.obj['WORKING_DIR'] = working_dir
+    ctx.obj['CURRENT_DIR'] = current_dir
     # All scripts will based on working dir to run
     os.chdir(working_dir)  # Debug directory: /var/www/html/Shinetech/shinetech-docker
 
@@ -89,7 +91,7 @@ def configure(ctx: click.Context) -> None:
               help="Build the development environment based on the specified configuration.")
 def build(ctx: click.Context, env: Any) -> None:
     """Build local development environment with your configuration"""
-    os.system('sh builder.sh ' + env)
+    os.system('bash builder.sh ' + env)
 
 
 @cli.command()
@@ -97,7 +99,7 @@ def build(ctx: click.Context, env: Any) -> None:
 def start(ctx: click.Context) -> None:
     """Launch docker services"""
     click.echo(click.style(f"Start to launch docker services", fg='cyan'))
-    os.system('sh bin/launch.sh')
+    os.system('bash bin/launch.sh')
 
 
 @cli.command()
@@ -105,7 +107,7 @@ def start(ctx: click.Context) -> None:
 def stop(ctx: click.Context) -> None:
     """Stop docker services"""
     click.echo(click.style(f"Start to stop docker services", fg='cyan'))
-    os.system('sh bin/stop.sh')
+    os.system('bash bin/stop.sh')
 
 
 @cli.command()
@@ -113,8 +115,9 @@ def stop(ctx: click.Context) -> None:
 @click.option('--dbname', required=True,
               help="Specify the database name to export or import.")
 @click.option('--backup_sql_file',
-              help="Specifies the SQL file path for database backup, "
-                   "which is placed in the var directory of docker by default.")
+              help="Specifies the backup SQL file path, "
+                   "which can be used for imported source file and exported target file or directory. "
+                   "The default is the specified file in the current directory.")
 @click.argument('action', type=click.Choice(['import', 'export']), required=True)
 def database(ctx: click.Context, action: Any, dbname: Any, backup_sql_file: Any) -> None:
     """Export or import database"""
@@ -123,11 +126,14 @@ def database(ctx: click.Context, action: Any, dbname: Any, backup_sql_file: Any)
         exit(1)
     if action == 'import':
         if backup_sql_file is None:
-            click.echo(click.style(f"Invalid backup SQL file", fg='red'))
+            click.echo(click.style(f"Invalid source backup SQL file", fg='red'))
             exit(1)
-        os.system('sh bin/import_db.sh ' + dbname + ' ' + backup_sql_file)
+        os.system('bash bin/import_db.sh ' + dbname + ' ' + backup_sql_file + ' ' + current_dir)
     elif action == 'export':
-        os.system('sh bin/export_db.sh ' + dbname)
+        command = 'bash bin/export_db.sh ' + dbname + ' ' + current_dir
+        if backup_sql_file is not None:
+            command += ' ' + backup_sql_file
+        os.system(command)
 
 
 @cli.command()
@@ -135,7 +141,7 @@ def database(ctx: click.Context, action: Any, dbname: Any, backup_sql_file: Any)
 @click.argument('service', required=True)
 def ssh(ctx: click.Context, service: Any) -> None:
     """Log in to the specified server using SSH"""
-    os.system('sh bin/ssh.sh ' + service)
+    os.system('bash bin/ssh.sh ' + service)
 
 
 @cli.command()
@@ -144,7 +150,10 @@ def ssh(ctx: click.Context, service: Any) -> None:
               help="Specify the target version to upgrade. e.g: 1.0.1")
 def upgrade(ctx: click.Context, target_version: Any) -> None:
     """Upgrade Shinetech Docker"""
-    os.system('sh bin/upgrade.sh ' + target_version)
+    if target_version is not None:
+        os.system('bash bin/upgrade.sh ' + target_version)
+    else:
+        os.system('bash bin/upgrade.sh')
 
 
 @cli.command()
@@ -184,9 +193,9 @@ def about(ctx: click.Context) -> None:
 def init_project(ctx: click.Context, platform: Any, name: Any, country: Any) -> None:
     """Initial the project"""
     if country is None:
-        os.system('sh bin/init_project.sh ' + platform + ' ' + name)
+        os.system('bash bin/init_project.sh ' + platform + ' ' + name)
     else:
-        os.system('sh bin/init_project.sh ' + platform + ' ' + name + ' ' + country)
+        os.system('bash bin/init_project.sh ' + platform + ' ' + name + ' ' + country)
 
 
 def main():
