@@ -1,6 +1,5 @@
 # Shinetech Docker CLI
 
-[![Build Status][build_status_badge]][build_status_link]
 [![PyPI version][pypi_badge]][pypi_link]
 
 Shinetech Docker CLI is a more intelligent, user-friendly and advanced configurable local development environment built with Docker.
@@ -274,7 +273,5 @@ stdocker upgrade --target_version=1.0.1
 ```
 
 
-[build_status_badge]: https://github.com/winds1983/stdocker/actions/workflows/test.yml/badge.svg
-[build_status_link]: https://github.com/winds1983/stdocker/actions/workflows/test.yml
 [pypi_badge]: https://badge.fury.io/py/stdocker.svg
 [pypi_link]: http://badge.fury.io/py/stdocker
