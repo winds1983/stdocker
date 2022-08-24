@@ -5,10 +5,33 @@
 
 Shinetech Docker CLI is a more intelligent, user-friendly and advanced configurable local development environment built with Docker.
 
+- [Getting Started](#getting-started)
+- [Use Cases](#use-cases)
+  * [Run docker command](#run-docker-command)
+  * [Run docker-compose command](#run-docker-compose-command)
+  * [Run docker exec command](#run-docker-exec-command)
+  * [Log in to the specified server using SSH](#log-in-to-the-specified-server-using-ssh)
+  * [Launch docker services](#launch-docker-services)
+  * [Stop docker services](#stop-docker-services)
+  * [Restart specified docker service](#restart-specified-docker-service)
+  * [Configure local environment](#configure-local-environment)
+  * [Build local development environment with your configuration](#build-local-development-environment-with-your-configuration)
+  * [Export or import database](#export-or-import-database)
+    * [Export database](#export-database)
+    * [Import database](#import-database)
+  * [Show the local environment and workspace information](#show-the-local-environment-and-workspace-information)
+  * [Initial the project](#initial-the-project)
+  * [Upgrade Shinetech Docker](#upgrade-shinetech-docker)
+
 ## Getting Started
 
 ```shell
 pip3 install stdocker
+```
+
+If you get error `ERROR: Could not find a version that satisfies the requirement`, please use the following command to install:
+```shell
+python3 -m pip install stdocker==1.0.1
 ```
 
 It based on the internal docker project `Shinetech Docker`, please install it first. If you do not have permission to use Shinetech Docker, please ignore this package.
