@@ -182,8 +182,8 @@ def about(ctx: click.Context) -> None:
 
 @cli.command()
 @click.pass_context
-@click.option('--platform', required=True, default='magento2',
-              type=click.Choice(['magento2', 'symfony', 'laravel', 'yii', 'wordpress']),
+@click.option('--platform', required=True, default='magento',
+              type=click.Choice(['magento', 'symfony', 'laravel', 'yii', 'wordpress']),
               help="Specifies the framework used by the project.")
 @click.option('--name', required=True,
               callback=check_project_name,
@@ -192,10 +192,15 @@ def about(ctx: click.Context) -> None:
               help="Build project by country, such as HP project have multiple independent countries and regions.")
 def init_project(ctx: click.Context, platform: Any, name: Any, country: Any) -> None:
     """Initial the project"""
-    if country is None:
-        os.system('bash bin/init_project.sh ' + platform + ' ' + name)
-    else:
-        os.system('bash bin/init_project.sh ' + platform + ' ' + name + ' ' + country)
+    working_dir = ctx.obj['WORKING_DIR']
+    env_values = get_env_values(working_dir)
+    workspace = env_values['WORKSPACE']
+
+    command = 'bash bin/init_project.sh ' + workspace + ' ' + platform + ' ' + name
+    if country is not None:
+        command += ' ' + country
+
+    os.system(command)
 
 
 def main():

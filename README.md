@@ -253,7 +253,7 @@ stdocker init-project [OPTIONS]
 
 Initial a Magento 2 project:
 ```shell
-stdocker init-project --platform=magento2 --name=m2project
+stdocker init-project --platform=magento --name=m2project
 ```
 
 Initial a Symfony project:
