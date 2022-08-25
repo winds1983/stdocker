@@ -98,7 +98,7 @@ def build(ctx: click.Context, env: Any) -> None:
 @click.pass_context
 def start(ctx: click.Context) -> None:
     """Launch docker services"""
-    click.echo(click.style(f"Start to launch docker services", fg='cyan'))
+    click.echo(click.style(f"Start to launch docker services", fg='green'))
     os.system('bash bin/launch.sh')
 
 
@@ -106,7 +106,7 @@ def start(ctx: click.Context) -> None:
 @click.pass_context
 def stop(ctx: click.Context) -> None:
     """Stop docker services"""
-    click.echo(click.style(f"Start to stop docker services", fg='cyan'))
+    click.echo(click.style(f"Start to stop docker services", fg='green'))
     os.system('bash bin/stop.sh')
 
 

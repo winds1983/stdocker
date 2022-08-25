@@ -56,6 +56,7 @@ def get_env_values(install_dir):
     env_handler = EnvHandler(env_file=env_file)
     return env_handler.get_values()
 
+
 """
 List all environments
 """
