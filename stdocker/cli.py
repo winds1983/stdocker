@@ -2,7 +2,7 @@ import os
 import sys
 import re
 from typing import Any, Dict, List
-from .core import get_env_values, list_envs
+from core import get_env_values, list_envs, get_default_workspace
 
 try:
     import click
@@ -11,10 +11,11 @@ except ImportError:
                      'Run pip3 install "stdocker[cli]" to fix this.')
     sys.exit(1)
 
-from .version import __version__
+from version import __version__
 
 install_dir = '/opt/shinetech/stdocker'
 current_dir = os.getcwd()
+
 
 """
 Check if project name is valid
@@ -114,7 +115,7 @@ def stop(ctx: click.Context) -> None:
 @click.pass_context
 @click.option('--dbname', required=True,
               help="Specify the database name to export or import.")
-@click.option('--backup_sql_file',
+@click.option('--backup-sql-file',
               help="Specifies the backup SQL file path, "
                    "which can be used for imported source file and exported target file or directory. "
                    "The default is the specified file in the current directory.")
@@ -139,14 +140,14 @@ def database(ctx: click.Context, action: Any, dbname: Any, backup_sql_file: Any)
 @cli.command()
 @click.pass_context
 @click.argument('service', required=True)
-def ssh(ctx: click.Context, service: Any) -> None:
-    """Log in to the specified server using SSH"""
-    os.system('bash bin/ssh.sh ' + service)
+def bash(ctx: click.Context, service: Any) -> None:
+    """Bash session for running container"""
+    os.system('bash bin/container_bash.sh ' + service)
 
 
 @cli.command()
 @click.pass_context
-@click.option('--target_version',
+@click.option('--target-version',
               help="Specify the target version to upgrade. e.g: 1.0.1")
 def upgrade(ctx: click.Context, target_version: Any) -> None:
     """Upgrade Shinetech Docker"""
@@ -154,6 +155,18 @@ def upgrade(ctx: click.Context, target_version: Any) -> None:
         os.system('bash bin/upgrade.sh ' + target_version)
     else:
         os.system('bash bin/upgrade.sh')
+
+
+@cli.command()
+@click.pass_context
+@click.option('--directory', default=get_default_workspace(),
+              help="Specify the workspace directory. default is " + get_default_workspace())
+def workspace(ctx: click.Context, directory: Any) -> None:
+    """Initial workspace"""
+    if directory is not None:
+        os.system('bash bin/workspace.sh ' + directory)
+    else:
+        os.system('bash bin/workspace.sh')
 
 
 @cli.command()

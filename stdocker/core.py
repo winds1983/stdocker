@@ -1,6 +1,7 @@
 import os
 import dotenv
 from dotenv import load_dotenv, find_dotenv, dotenv_values
+from pathlib import Path
 
 
 class EnvHandler(object):
@@ -75,3 +76,10 @@ def list_envs(install_dir):
             envs.append(env[0])
 
     return envs
+
+
+"""
+Get current user home directory
+"""
+def get_default_workspace():
+    return str(Path.home()) + '/stdocker'
