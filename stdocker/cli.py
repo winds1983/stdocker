@@ -2,7 +2,7 @@ import os
 import sys
 import re
 from typing import Any, Dict, List
-from core import get_env_values, list_envs, get_default_workspace
+from .core import get_env_values, list_envs, get_default_workspace
 
 try:
     import click
@@ -11,7 +11,7 @@ except ImportError:
                      'Run pip3 install "stdocker[cli]" to fix this.')
     sys.exit(1)
 
-from version import __version__
+from .version import __version__
 
 install_dir = '/opt/shinetech/stdocker'
 current_dir = os.getcwd()

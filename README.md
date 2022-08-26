@@ -235,14 +235,22 @@ Current environment:
  - magento_244
 Your workspace information:
  - Workspace: /home/sunfeng/stdocker
- - Project Directory: ./www
- - Nginx VHosts: ./config/services/nginx/sites-enabled
- - Nginx Log: ./var/logs/nginx
- - Apache VHosts: ./config/services/apache/sites-enabled
- - Apache Log: ./var/logs/apache2
- - SSL CA: ./config/services/ca
- - php.ini: ./config/services/php/php.ini
- - MySQL Log: ./var/logs/mysql
+ - Project Directory: /home/sunfeng/stdocker/www
+ - Nginx VHosts: /home/sunfeng/stdocker/config/services/nginx/sites-enabled
+ - Nginx Log: /home/sunfeng/stdocker/var/logs/nginx
+ - Apache VHosts: /home/sunfeng/stdocker/config/services/apache/sites-enabled
+ - Apache Log: /home/sunfeng/stdocker/var/logs/apache2
+ - SSL CA: /home/sunfeng/stdocker/config/services/ca
+ - php.ini: /home/sunfeng/stdocker/config/services/php/php.ini
+ - MySQL Log: /home/sunfeng/stdocker/var/logs/mysql
+```
+
+### Initial workspace
+
+It will initial your workspace to your home or specified directory, and update env config.
+
+```shell
+stdocker workspace
 ```
 
 ### Initial the project
