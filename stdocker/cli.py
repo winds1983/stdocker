@@ -149,12 +149,21 @@ def bash(ctx: click.Context, service: Any) -> None:
 @click.pass_context
 @click.option('--target-version',
               help="Specify the target version to upgrade. e.g: 1.0.1")
-def upgrade(ctx: click.Context, target_version: Any) -> None:
+@click.option('--force/--no-force', default=False,
+              help="Force or not force restart of services")
+def upgrade(ctx: click.Context, target_version: Any, force: Any) -> None:
     """Upgrade Shinetech Docker"""
-    if target_version is not None:
-        os.system('bash bin/upgrade.sh ' + target_version)
+    command = 'bash bin/upgrade.sh '
+
+    if force:
+        command += ' y'
     else:
-        os.system('bash bin/upgrade.sh')
+        command += ' y'
+
+    if target_version is not None:
+        command += ' ' + target_version
+
+    os.system(command)
 
 
 @cli.command()

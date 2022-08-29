@@ -19,6 +19,7 @@ Shinetech Docker CLI is a more intelligent, user-friendly and advanced configura
     * [Export database](#export-database)
     * [Import database](#import-database)
   * [Show the local environment and workspace information](#show-the-local-environment-and-workspace-information)
+  * [Initial workspace](#initial-workspace)
   * [Initial the project](#initial-the-project)
   * [Upgrade Shinetech Docker](#upgrade-shinetech-docker)
 
@@ -61,6 +62,7 @@ Options:
 
 Commands:
   about         Show the local environment and workspace information
+  bash          Bash session for running container
   build         Build local development environment with your configuration
   compose       Execute sudo docker-compose * command
   configure     Configure local environment, will guide you through...
@@ -69,10 +71,10 @@ Commands:
   init-project  Initial the project
   restart       Restart specified docker service
   run           Execute sudo docker * command
-  ssh           Log in to the specified server using SSH
   start         Launch docker services
   stop          Stop docker services
   upgrade       Upgrade Shinetech Docker
+  workspace     Initial workspace
 ```
 
 ### Run docker command
@@ -116,12 +118,12 @@ stdev_elasticsearch_1   /bin/tini -- /usr/local/bi ...   Up      0.0.0.0:9200->9
 stdev_elasticvue_1      nginx -g daemon off;             Up      80/tcp, 0.0.0.0:8082->8080/tcp,:::8082->8080/tcp                                                                      
 stdev_mailcatcher_1     mailcatcher --smtp-ip=0.0. ...   Up      1025/tcp, 0.0.0.0:1080->1080/tcp,:::1080->1080/tcp                                                                    
 stdev_mysql_1           docker-entrypoint.sh mysqld      Up      0.0.0.0:3306->3306/tcp,:::3306->3306/tcp, 33060/tcp                                                                   
-stdev_nginx_1           /docker-entrypoint.sh ngin ...   Up      0.0.0.0:443->443/tcp,:::443->443/tcp, 0.0.0.0:80->80/tcp,:::80->80/tcp                                                
+stdev_nginx_1           /docker-entrypoint.sh /usr ...   Up      0.0.0.0:443->443/tcp,:::443->443/tcp, 0.0.0.0:6081->6081/tcp,:::6081->6081/tcp, 0.0.0.0:80->80/tcp,:::80->80/tcp      
 stdev_phpfpm_1          /docker-entrypoint.sh php-fpm    Up      9000/tcp                                                                                                              
 stdev_phpmyadmin_1      /docker-entrypoint.sh apac ...   Up      0.0.0.0:8443->443/tcp,:::8443->443/tcp, 0.0.0.0:8080->80/tcp,:::8080->80/tcp                                          
 stdev_phpredisadmin_1   tini -- php -S 0.0.0.0:80        Up      0.0.0.0:8089->80/tcp,:::8089->80/tcp                                                                                  
 stdev_rabbitmq_1        docker-entrypoint.sh rabbi ...   Up      15671/tcp, 0.0.0.0:15672->15672/tcp,:::15672->15672/tcp, 15691/tcp, 15692/tcp, 25672/tcp, 4369/tcp, 5671/tcp, 5672/tcp
-stdev_redis_1           docker-entrypoint.sh redis ...   Up      0.0.0.0:6379->6379/tcp,:::6379->6379/tcp 
+stdev_redis_1           docker-entrypoint.sh redis ...   Up      0.0.0.0:6379->6379/tcp,:::6379->6379/tcp
 ```
 
 ### Run docker exec command
