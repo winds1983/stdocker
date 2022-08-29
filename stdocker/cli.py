@@ -158,12 +158,14 @@ def upgrade(ctx: click.Context, target_version: Any, force: Any) -> None:
     if force:
         command += ' y'
     else:
-        command += ' y'
+        command += ' n'
 
     if target_version is not None:
         command += ' ' + target_version
 
     os.system(command)
+
+    click.echo(click.style(f"Upgraded successfully.", fg='green'))
 
 
 @cli.command()

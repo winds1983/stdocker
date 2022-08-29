@@ -31,7 +31,7 @@ pip3 install stdocker
 
 If you get error `ERROR: Could not find a version that satisfies the requirement`, please use the following command to install:
 ```shell
-python3 -m pip install stdocker==1.0.1
+python3 -m pip install stdocker==1.0.4
 ```
 
 It based on the internal docker project `Shinetech Docker`, please install it first. If you do not have permission to use Shinetech Docker, please ignore this package.
@@ -280,6 +280,11 @@ stdocker upgrade
 Upgrade to the specified version:
 ```shell
 stdocker upgrade --target_version=1.0.1
+```
+
+If you want to restart docker services after upgrade, please use the following command:
+```shell
+stdocker upgrade --force
 ```
 
 

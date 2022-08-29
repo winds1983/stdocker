@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [1.0.4] - 2022-08-29
+
+### Added
+
+- Add force restart docker services for upgrade
+- Update use cases documents
+
+
 ## [1.0.3] - 2022-08-26
 
 ### Fixed
