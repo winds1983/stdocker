@@ -12,6 +12,7 @@ project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 - Add force restart docker services for upgrade
 - Update use cases documents
+- Improve initial project command
 
 
 ## [1.0.3] - 2022-08-26
