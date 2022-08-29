@@ -212,17 +212,34 @@ def about(ctx: click.Context) -> None:
 @click.option('--name', required=True,
               callback=check_project_name,
               help="Specify project name.")
+@click.option('--db-sql-file', required=False,
+              help="SQL backup file for initializing the database.")
 @click.option('--country', required=False,
               help="Build project by country, such as HP project have multiple independent countries and regions.")
-def init_project(ctx: click.Context, platform: Any, name: Any, country: Any) -> None:
+@click.option('--multiple-domain/--no-multiple-domain', default=False,
+              help="Use multiple domains for multiple sites, single domain is used by default. "
+                   "This option takes effect if --country is not empty. "
+                   "e.g: For HP project, If No will use hp.dev.php9.cc for all country sites, "
+                   "if Yes will use <country>.hp.dev.php9.cc for different sites.")
+def init_project(ctx: click.Context, platform: Any, name: Any, db_sql_file: Any, country: Any, multiple_domain: Any) -> None:
     """Initial the project"""
     working_dir = ctx.obj['WORKING_DIR']
     env_values = get_env_values(working_dir)
     workspace = env_values['WORKSPACE']
 
-    command = 'bash bin/init_project.sh ' + workspace + ' ' + platform + ' ' + name
+    command = 'bash bin/init_project.sh ' + current_dir + ' ' + workspace + ' ' + platform + ' ' + name
+
+    if db_sql_file is not None:
+        command += ' ' + db_sql_file
+    else:
+        command += ' ""'
+
     if country is not None:
         command += ' ' + country
+        if multiple_domain:
+            command += ' y'
+        else:
+            command += ' n'
 
     os.system(command)
 
