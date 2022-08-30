@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [1.0.5] - 2022-08-30
+
+### Added
+
+- Add conformation when project already exists for initial project
+- Add initial the Magento project command
+
+
 ## [1.0.4] - 2022-08-29
 
 ### Added

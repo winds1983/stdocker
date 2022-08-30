@@ -83,3 +83,16 @@ Get current user home directory
 """
 def get_default_workspace():
     return str(Path.home()) + '/stdocker'
+
+
+"""
+Convert version
+e.g: 
+2.4.5 > 245
+2.4.3-p2 > 243p2
+"""
+def convert_version(version):
+    version.replace(".", "")
+    version.replace("-", "")
+    version.replace("_", "")
+    return version

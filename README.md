@@ -20,7 +20,8 @@ Shinetech Docker CLI is a more intelligent, user-friendly and advanced configura
     * [Import database](#import-database)
   * [Show the local environment and workspace information](#show-the-local-environment-and-workspace-information)
   * [Initial workspace](#initial-workspace)
-  * [Initial the project](#initial-the-project)
+  * [Create a project based on a base template or existing code](#create-a-project-based-on-a-base-template-or-existing-code)
+  * [Create a project based on the original Magento code](#create-a-project-based-on-the-original-magento-code)
   * [Upgrade Shinetech Docker](#upgrade-shinetech-docker)
 
 ## Getting Started
@@ -68,7 +69,8 @@ Commands:
   configure     Configure local environment, will guide you through...
   database      Export or import database
   exec          Execute sudo docker exec * command
-  init-project  Initial the project
+  init-magento  Create a project based on the original Magento code
+  init-project  Create a project based on a base template or existing code
   restart       Restart specified docker service
   run           Execute sudo docker * command
   start         Launch docker services
@@ -255,7 +257,7 @@ It will initial your workspace to your home or specified directory, and update e
 stdocker workspace
 ```
 
-### Initial the project
+### Create a project based on a base template or existing code
 
 ```shell
 stdocker init-project [OPTIONS]
@@ -270,6 +272,23 @@ Initial a Symfony project:
 ```shell
 stdocker init-project --platform=symfony --name=sfproject
 ```
+
+### Create a project based on the original Magento code
+
+```shell
+stdocker init-magento [OPTIONS]
+```
+
+Create a Magento 2.4.5 project:
+```shell
+stdocker init-magento --magento-version=2.4.5 --source-code-file=/home/sunfeng/Downloads/adobe-commerce-2.4.5-2022-07-21-08-24-23.zip
+```
+
+Create a Magento 2.4.5 project with custom project name:
+```shell
+stdocker init-magento --magento-version=2.4.5 --source-code-file=/home/sunfeng/Downloads/adobe-commerce-2.4.5-2022-07-21-08-24-23.zip --project-name=testproject
+```
+
 
 ### Upgrade Shinetech Docker
 

@@ -2,7 +2,7 @@ import os
 import sys
 import re
 from typing import Any, Dict, List
-from .core import get_env_values, list_envs, get_default_workspace
+from .core import get_env_values, list_envs, get_default_workspace, convert_version
 
 try:
     import click
@@ -21,6 +21,8 @@ current_dir = os.getcwd()
 Check if project name is valid
 """
 def check_project_name(ctx, param, value):
+    if not param.required and value is None:
+        return value
     pattern = re.compile('^[a-zA-Z][0-9a-zA-Z]{0,50}$')
     matched = pattern.match(value)
     if matched is None:
@@ -222,12 +224,21 @@ def about(ctx: click.Context) -> None:
                    "e.g: For HP project, If No will use hp.dev.php9.cc for all country sites, "
                    "if Yes will use <country>.hp.dev.php9.cc for different sites.")
 def init_project(ctx: click.Context, platform: Any, name: Any, db_sql_file: Any, country: Any, multiple_domain: Any) -> None:
-    """Initial the project"""
+    """Create a project based on a base template or existing code"""
     working_dir = ctx.obj['WORKING_DIR']
     env_values = get_env_values(working_dir)
-    workspace = env_values['WORKSPACE']
+    workspace_dir = env_values['WORKSPACE']
 
-    command = 'bash bin/init_project.sh ' + current_dir + ' ' + workspace + ' ' + platform + ' ' + name
+    domain = name + '.dev.php9.cc'
+    if multiple_domain and country is not None:
+        domain = name + '-' + country + '.dev.php9.cc'
+
+    project_dir = workspace_dir + '/www/' + domain
+    if os.path.exists(project_dir):
+        click.echo(click.style(f"NOTE: The project directory {project_dir} already exists.", fg='cyan'))
+        click.confirm('Do you confirm to override and create project?', abort=True)
+
+    command = 'bash bin/init_project.sh ' + current_dir + ' ' + workspace_dir + ' ' + platform + ' ' + name
 
     if db_sql_file is not None:
         command += ' ' + db_sql_file
@@ -241,6 +252,38 @@ def init_project(ctx: click.Context, platform: Any, name: Any, db_sql_file: Any,
         else:
             command += ' n'
 
+    os.system(command)
+
+
+@cli.command()
+@click.pass_context
+@click.option('--magento-version', required=True,
+              help="Specifies Magento version.")
+@click.option('--source-code-file', required=True,
+              help="Specify Magento original source code file.")
+@click.option('--project-name', required=False,
+              callback=check_project_name,
+              help="Specify project name.")
+def init_magento(ctx: click.Context, magento_version: Any, source_code_file: Any, project_name: Any) -> None:
+    """Create a project based on the original Magento code"""
+    working_dir = ctx.obj['WORKING_DIR']
+    env_values = get_env_values(working_dir)
+    workspace_dir = env_values['WORKSPACE']
+
+    if project_name is None:
+        # 2.4.5 > 245
+        version = convert_version(magento_version)
+        project_name = 'm' + version  # e.g: m245
+
+    project_domain = project_name + '.dev.php9.cc'
+
+    project_dir = workspace_dir + '/www/' + project_domain
+    if os.path.exists(project_dir):
+        click.echo(click.style(f"NOTE: The Magento project {project_dir} already exists.", fg='cyan'))
+        click.confirm('Do you confirm to override and create project?', abort=True)
+
+    command = 'bash bin/init_magento.sh ' + current_dir + ' ' \
+              + workspace_dir + ' ' + project_name + ' ' + source_code_file
     os.system(command)
 
 
