@@ -20,8 +20,9 @@ Shinetech Docker CLI is a more intelligent, user-friendly and advanced configura
     * [Import database](#import-database)
   * [Show the local environment and workspace information](#show-the-local-environment-and-workspace-information)
   * [Initial workspace](#initial-workspace)
-  * [Create a project based on a base template or existing code](#create-a-project-based-on-a-base-template-or-existing-code)
-  * [Create a project based on the original Magento code](#create-a-project-based-on-the-original-magento-code)
+  * [Create project](#create-project)
+    * [Create a project based on a base template or existing code](#create-a-project-based-on-a-base-template-or-existing-code)
+    * [Create a project based on the Magento source code](#create-a-project-based-on-the-magento-source-code)
   * [Upgrade Shinetech Docker](#upgrade-shinetech-docker)
 
 ## Getting Started
@@ -69,7 +70,7 @@ Commands:
   configure     Configure local environment, will guide you through...
   database      Export or import database
   exec          Execute sudo docker exec * command
-  init-magento  Create a project based on the original Magento code
+  init-magento  Create a project based on the Magento source code
   init-project  Create a project based on a base template or existing code
   restart       Restart specified docker service
   run           Execute sudo docker * command
@@ -257,7 +258,9 @@ It will initial your workspace to your home or specified directory, and update e
 stdocker workspace
 ```
 
-### Create a project based on a base template or existing code
+### Create project
+
+#### Create a project based on a base template or existing code
 
 ```shell
 stdocker init-project [OPTIONS]
@@ -273,7 +276,9 @@ Initial a Symfony project:
 stdocker init-project --platform=symfony --name=sfproject
 ```
 
-### Create a project based on the original Magento code
+#### Create a project based on the Magento source code
+
+Please download the Magento source code from the official website first.
 
 ```shell
 stdocker init-magento [OPTIONS]

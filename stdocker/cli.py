@@ -265,7 +265,7 @@ def init_project(ctx: click.Context, platform: Any, name: Any, db_sql_file: Any,
               callback=check_project_name,
               help="Specify project name.")
 def init_magento(ctx: click.Context, target_version: Any, source_code_file: Any, project_name: Any) -> None:
-    """Create a project based on the original Magento code"""
+    """Create a project based on the Magento source code"""
     working_dir = ctx.obj['WORKING_DIR']
     env_values = get_env_values(working_dir)
     workspace_dir = env_values['WORKSPACE']
