@@ -257,22 +257,22 @@ def init_project(ctx: click.Context, platform: Any, name: Any, db_sql_file: Any,
 
 @cli.command()
 @click.pass_context
-@click.option('--magento-version', required=True,
-              help="Specifies Magento version.")
+@click.option('--target-version', required=True,
+              help="Specify Magento version.")
 @click.option('--source-code-file', required=True,
               help="Specify Magento original source code file.")
 @click.option('--project-name', required=False,
               callback=check_project_name,
               help="Specify project name.")
-def init_magento(ctx: click.Context, magento_version: Any, source_code_file: Any, project_name: Any) -> None:
+def init_magento(ctx: click.Context, target_version: Any, source_code_file: Any, project_name: Any) -> None:
     """Create a project based on the original Magento code"""
     working_dir = ctx.obj['WORKING_DIR']
     env_values = get_env_values(working_dir)
     workspace_dir = env_values['WORKSPACE']
 
-    if project_name is None:
+    if target_version is not None:
         # 2.4.5 > 245
-        version = convert_version(magento_version)
+        version = convert_version(target_version)
         project_name = 'm' + version  # e.g: m245
 
     project_domain = project_name + '.dev.php9.cc'

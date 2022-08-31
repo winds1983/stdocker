@@ -92,7 +92,5 @@ e.g:
 2.4.3-p2 > 243p2
 """
 def convert_version(version):
-    version.replace(".", "")
-    version.replace("-", "")
-    version.replace("_", "")
+    version = version.replace(".", "").replace("-", "").replace("_", "")
     return version
