@@ -2,7 +2,8 @@ import os
 import sys
 import re
 from typing import Any, Dict, List
-from .core import get_env_values, list_envs, get_default_workspace, convert_version
+from .utils import list_env_names, get_default_workspace, convert_version
+from .env_handler import EnvHandler
 
 try:
     import click
@@ -12,9 +13,9 @@ except ImportError:
     sys.exit(1)
 
 from .version import __version__
-
-install_dir = '/opt/shinetech/stdocker'
-current_dir = os.getcwd()
+from .config import install_dir
+from .config import current_dir
+from .config import base_domain
 
 
 """
@@ -90,7 +91,7 @@ def configure(ctx: click.Context) -> None:
 @cli.command()
 @click.pass_context
 @click.option('--env', default='magento_244',
-              type=click.Choice(list_envs(install_dir)),
+              type=click.Choice(list_env_names(install_dir)),
               help="Build the development environment based on the specified configuration.")
 def build(ctx: click.Context, env: Any) -> None:
     """Build local development environment with your configuration"""
@@ -187,7 +188,8 @@ def workspace(ctx: click.Context, directory: Any) -> None:
 def about(ctx: click.Context) -> None:
     """Show the local environment and workspace information"""
     working_dir = ctx.obj['WORKING_DIR']
-    env_values = get_env_values(working_dir)
+    env_handler = EnvHandler(working_dir=working_dir)
+    env_values = env_handler.get_env_values()
 
     click.echo(click.style(f"Current environment:", fg='yellow', bold=True))
     click.echo(click.style(f" - {env_values['DEFAULT_ENV']}", fg='cyan'))
@@ -204,6 +206,16 @@ def about(ctx: click.Context) -> None:
     click.echo(click.style(f" - SSL CA: {env_values['SSL_CA_DIR']}", fg='cyan'))
     click.echo(click.style(f" - php.ini: {env_values['PHP_INI']}", fg='cyan'))
     click.echo(click.style(f" - MySQL Log: {env_values['MYSQL_LOG_DIR']}", fg='cyan'))
+
+
+@cli.command()
+@click.pass_context
+def envs(ctx: click.Context) -> None:
+    """List all environments"""
+    working_dir = ctx.obj['WORKING_DIR']
+    env_handler = EnvHandler(working_dir=working_dir)
+    env_table = env_handler.list_env_table()
+    print(env_table)
 
 
 @cli.command()
@@ -226,12 +238,13 @@ def about(ctx: click.Context) -> None:
 def init_project(ctx: click.Context, platform: Any, name: Any, db_sql_file: Any, country: Any, multiple_domain: Any) -> None:
     """Create a project based on a base template or existing code"""
     working_dir = ctx.obj['WORKING_DIR']
-    env_values = get_env_values(working_dir)
+    env_handler = EnvHandler(working_dir=working_dir)
+    env_values = env_handler.get_env_values()
     workspace_dir = env_values['WORKSPACE']
 
-    domain = name + '.dev.php9.cc'
+    domain = name + base_domain
     if multiple_domain and country is not None:
-        domain = name + '-' + country + '.dev.php9.cc'
+        domain = name + '-' + country + base_domain
 
     project_dir = workspace_dir + '/www/' + domain
     if os.path.exists(project_dir):
@@ -267,7 +280,8 @@ def init_project(ctx: click.Context, platform: Any, name: Any, db_sql_file: Any,
 def init_magento(ctx: click.Context, target_version: Any, source_code_file: Any, project_name: Any) -> None:
     """Create a project based on the Magento source code"""
     working_dir = ctx.obj['WORKING_DIR']
-    env_values = get_env_values(working_dir)
+    env_handler = EnvHandler(working_dir=working_dir)
+    env_values = env_handler.get_env_values()
     workspace_dir = env_values['WORKSPACE']
 
     if target_version is not None:
@@ -275,7 +289,7 @@ def init_magento(ctx: click.Context, target_version: Any, source_code_file: Any,
         version = convert_version(target_version)
         project_name = 'm' + version  # e.g: m245
 
-    project_domain = project_name + '.dev.php9.cc'
+    project_domain = project_name + base_domain
 
     project_dir = workspace_dir + '/www/' + project_domain
     if os.path.exists(project_dir):

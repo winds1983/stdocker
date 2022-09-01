@@ -1,10 +1,11 @@
 import os
 import dotenv
 from dotenv import load_dotenv, find_dotenv, dotenv_values
-from pathlib import Path
+
+from .config import install_dir
 
 
-class EnvHandler(object):
+class EnvParser(object):
 
     def __init__(self, env_file=None):
         if env_file is not None:
@@ -22,7 +23,8 @@ class EnvHandler(object):
     def get_env_file(self):
         env_file = find_dotenv()
         if not os.path.exists(env_file):
-            env_file = '/opt/shinetech/stdocker/.env'
+            # /opt/shinetech/stdocker/.env
+            env_file = install_dir + '/.env'
         return env_file
 
     """
@@ -49,48 +51,3 @@ class EnvHandler(object):
         return dotenv.set_key(self.env_file, key, value, quote_mode='auto')
 
 
-"""
-Get all env configs
-"""
-def get_env_values(install_dir):
-    env_file = install_dir + '/.env'
-    env_handler = EnvHandler(env_file=env_file)
-    return env_handler.get_values()
-
-
-"""
-List all environments
-"""
-def list_envs(install_dir):
-    custom_env_dir = install_dir + '/var/env'
-    predefined_env_dir = install_dir + '/config/env/templates'
-
-    custom_env_files = os.listdir(custom_env_dir)
-    predefined_env_files = os.listdir(predefined_env_dir)
-    env_files = predefined_env_files + custom_env_files
-
-    envs = []
-    for env_file in env_files:
-        if env_file != '.gitkeep':
-            env = env_file.split('.')
-            envs.append(env[0])
-
-    return envs
-
-
-"""
-Get current user home directory
-"""
-def get_default_workspace():
-    return str(Path.home()) + '/stdocker'
-
-
-"""
-Convert version
-e.g: 
-2.4.5 > 245
-2.4.3-p2 > 243p2
-"""
-def convert_version(version):
-    version = version.replace(".", "").replace("-", "").replace("_", "")
-    return version
