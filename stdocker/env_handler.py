@@ -1,5 +1,6 @@
 import os
 from beautifultable import BeautifulTable
+from termcolor import colored
 from .yaml_parser import YamlParser
 from .env_parser import EnvParser
 
@@ -93,11 +94,13 @@ class EnvHandler(object):
     def list_env_table(self):
         current_env = self.get_current_env()
         customized_envs = self.list_customized_detailed_envs()
-        env_names = self.list_customized_env_names()
+        # env_names = self.list_customized_env_names()
         services = ['webserver', 'php', 'mysql', 'phpmyadmin', 'elasticsearch', 'elasticvue',
-                    'redis', 'phpredisadmin', 'rabbitmq', 'mailcatcher', 'mongdo', 'mongoexpress']
+                    'redis', 'phpredisadmin', 'rabbitmq', 'mailcatcher',
+                    'mongdo', 'mongoexpress', 'postgres', 'pgweb']
         service_names = ['Web Server', 'PHP', 'MySQL', 'phpMyAdmin', 'Elasticsearch', 'Elasticvue',
-                    'Redis', 'phpRedisAdmin', 'RabbitMQ', 'Mailcatcher', 'Mongdo', 'Mongo Express']
+                         'Redis', 'phpRedisAdmin', 'RabbitMQ', 'Mailcatcher',
+                         'Mongdo', 'Mongo Express', 'PostgreSQL', 'pgweb']
 
         table = BeautifulTable(maxwidth=200)
         columns_headers = ['Env Code'] + service_names
@@ -106,17 +109,26 @@ class EnvHandler(object):
         for item in customized_envs:
             env_detail_names.append(item['name'])
             env = item['env']
-            description = item['description']
+            # description = item['description']
 
-            services_status = [env]
+            services_status = []
+            if env == current_env:
+                services_status.append(colored(env, 'red'))
+            else:
+                services_status.append(env)
+
             for service in services:
+                status = 'N'
                 if service in item['services'].keys():
                     if item['services'][service] is True:
-                        services_status.append('Y')
+                        status = 'Y'
                     else:
-                        services_status.append(item['services'][service])
+                        status = item['services'][service]
+
+                if env == current_env:
+                    services_status.append(colored(status, 'red'))
                 else:
-                    services_status.append('N')
+                    services_status.append(status)
 
             table.rows.append(services_status)
 

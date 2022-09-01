@@ -6,3 +6,4 @@ python-dotenv
 click
 requests
 beautifultable
+termcolor
