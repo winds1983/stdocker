@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [1.0.7] - 2022-09-01
+
+### Added
+
+- Add list envs command and rebuild env handler code
+- Optimize env table and colored current env
+
+
 ## [1.0.6] - 2022-08-31
 
 ### Fixed
