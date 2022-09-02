@@ -16,6 +16,7 @@ from .version import __version__
 from .config import install_dir
 from .config import current_dir
 from .config import base_domain
+from .config import platforms
 
 
 """
@@ -220,8 +221,8 @@ def envs(ctx: click.Context) -> None:
 
 @cli.command()
 @click.pass_context
-@click.option('--platform', required=True, default='magento',
-              type=click.Choice(['magento', 'symfony', 'laravel', 'yii', 'wordpress']),
+@click.option('--platform', required=True, default='generic',
+              type=click.Choice(platforms),
               help="Specifies the framework used by the project.")
 @click.option('--name', required=True,
               callback=check_project_name,
