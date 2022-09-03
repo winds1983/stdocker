@@ -89,6 +89,8 @@ class EnvHandler(object):
         else:
             env_files = predefined_env_files + custom_env_files
 
+        env_files.sort(reverse=False)
+
         return env_files
 
     def list_env_table(self):
