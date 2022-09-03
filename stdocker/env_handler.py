@@ -95,14 +95,16 @@ class EnvHandler(object):
         current_env = self.get_current_env()
         customized_envs = self.list_customized_detailed_envs()
         # env_names = self.list_customized_env_names()
-        services = ['webserver', 'php', 'mysql', 'phpmyadmin', 'elasticsearch', 'elasticvue',
+        services = ['webserver', 'php', 'mysql', 'mariadb',
+                    'phpmyadmin', 'elasticsearch', 'elasticvue',
                     'redis', 'phpredisadmin', 'rabbitmq', 'mailcatcher',
                     'mongo', 'mongoexpress', 'postgres', 'pgweb']
-        service_names = ['Web Server', 'PHP', 'MySQL', 'phpMyAdmin', 'Elasticsearch', 'Elasticvue',
+        service_names = ['Web Server', 'PHP', 'MySQL', 'MariaDB',
+                         'phpMyAdmin', 'Elasticsearch', 'Elasticvue',
                          'Redis', 'phpRedisAdmin', 'RabbitMQ', 'Mailcatcher',
                          'MongoDB', 'Mongo Express', 'PostgreSQL', 'Pgweb']
 
-        table = BeautifulTable(maxwidth=200)
+        table = BeautifulTable(maxwidth=220)
         columns_headers = ['Env Code'] + service_names
 
         env_detail_names = []
