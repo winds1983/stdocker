@@ -242,6 +242,8 @@ def init_project(ctx: click.Context, platform: Any, name: Any, db_sql_file: Any,
     env_handler = EnvHandler(working_dir=working_dir)
     env_values = env_handler.get_env_values()
     workspace_dir = env_values['WORKSPACE']
+    current_env_configs = env_handler.get_current_env_configs()
+    webserver = current_env_configs['services']['webserver']
 
     domain = name + base_domain
     if multiple_domain and country is not None:
@@ -252,7 +254,8 @@ def init_project(ctx: click.Context, platform: Any, name: Any, db_sql_file: Any,
         click.echo(click.style(f"NOTE: The project directory {project_dir} already exists.", fg='cyan'))
         click.confirm('Do you confirm to override and create project?', abort=True)
 
-    command = 'bash bin/init_project.sh ' + current_dir + ' ' + workspace_dir + ' ' + platform + ' ' + name
+    command = 'bash bin/init_project.sh ' \
+              + current_dir + ' ' + workspace_dir + ' ' + webserver + ' ' + platform + ' ' + name
 
     if db_sql_file is not None:
         command += ' ' + db_sql_file
@@ -284,6 +287,8 @@ def init_magento(ctx: click.Context, target_version: Any, source_code_file: Any,
     env_handler = EnvHandler(working_dir=working_dir)
     env_values = env_handler.get_env_values()
     workspace_dir = env_values['WORKSPACE']
+    current_env_configs = env_handler.get_current_env_configs()
+    webserver = current_env_configs['services']['webserver']
 
     if target_version is not None:
         # 2.4.5 > 245
@@ -297,8 +302,8 @@ def init_magento(ctx: click.Context, target_version: Any, source_code_file: Any,
         click.echo(click.style(f"NOTE: The Magento project {project_dir} already exists.", fg='cyan'))
         click.confirm('Do you confirm to override and create project?', abort=True)
 
-    command = 'bash bin/init_magento.sh ' + current_dir + ' ' \
-              + workspace_dir + ' ' + project_name + ' ' + source_code_file
+    command = 'bash bin/init_magento.sh ' \
+              + current_dir + ' ' + workspace_dir + ' ' + webserver + ' ' + project_name + ' ' + source_code_file
     os.system(command)
 
 

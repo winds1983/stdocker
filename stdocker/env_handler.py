@@ -31,6 +31,33 @@ class EnvHandler(object):
         return env_values['DEFAULT_ENV']
 
     """
+    Get configs for current env
+    Will convert yaml to dict
+    """
+    def get_current_env_configs(self):
+        config_file = self.get_current_env_config_file()
+        yaml_parser = YamlParser(yaml_file=config_file)
+        return yaml_parser.load_yaml_to_dict()
+
+    """
+    Get config file for current env
+    e.g: /opt/shinetech/stdocker/config/env/templates/magento_244.yml
+    """
+    def get_current_env_config_file(self):
+        current_env = self.get_current_env()
+
+        custom_env_dir = self.working_dir + '/var/env'
+        predefined_env_dir = self.working_dir + '/config/env/templates'
+
+        config_file = predefined_env_dir + '/' + current_env + '.yml'
+        if not os.path.exists(config_file):
+            config_file = custom_env_dir + '/' + current_env + '.yml'
+            if not os.path.exists(config_file):
+                return None
+
+        return config_file
+
+    """
     List all customized environment names
     """
     def list_customized_env_names(self):
