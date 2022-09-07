@@ -307,6 +307,13 @@ def init_magento(ctx: click.Context, target_version: Any, source_code_file: Any,
     os.system(command)
 
 
+@cli.command()
+@click.pass_context
+def status(ctx: click.Context) -> None:
+    """List all running containers"""
+    os.system('sudo docker-compose ps')
+
+
 def main():
     cli()
 
