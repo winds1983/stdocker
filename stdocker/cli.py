@@ -275,9 +275,11 @@ def init_project(ctx: click.Context, platform: Any, name: Any, db_sql_file: Any,
 @cli.command()
 @click.pass_context
 @click.option('--target-version', required=True,
-              help="Specify Magento version.")
-@click.option('--source-code-file', required=True,
-              help="Specify Magento original source code file.")
+              help="Specify Magento version. e.g: 2.4.5, 2.4.4-p1")
+@click.option('--source-code-file', required=False,
+              help="Specify Magento original source code file. "
+                   "If not specified, composer will be used for installation, "
+                   "otherwise the specified source code package will be used.")
 @click.option('--project-name', required=False,
               callback=check_project_name,
               help="Specify project name.")
@@ -303,7 +305,10 @@ def init_magento(ctx: click.Context, target_version: Any, source_code_file: Any,
         click.confirm('Do you confirm to override and create project?', abort=True)
 
     command = 'bash bin/init_magento.sh ' \
-              + current_dir + ' ' + workspace_dir + ' ' + webserver + ' ' + project_name + ' ' + source_code_file
+              + current_dir + ' ' + workspace_dir + ' ' + webserver + ' ' + project_name + ' ' + target_version
+    if source_code_file is not None:
+        command += ' ' + source_code_file
+
     os.system(command)
 
 
