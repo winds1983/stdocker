@@ -6,6 +6,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [1.0.8] - 2022-09-08
+
+### Added
+
+- Adjust platforms for init project command
+- Add MariaDB to env table
+- Add sort for env table
+- Add webserver for create project and magento project
+- Add Zend framework to platforms
+- Add status command to list all running containers
+- Add target version to init magento command and make source code is not required
+- Add memcached for env table
+
+
 ## [1.0.7] - 2022-09-01
 
 ### Added
