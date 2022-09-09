@@ -15,15 +15,16 @@ Shinetech Docker CLI is a more intelligent, user-friendly and advanced configura
   * [Restart specified docker service](#restart-specified-docker-service)
   * [Configure local environment](#configure-local-environment)
   * [Build local development environment with your configuration](#build-local-development-environment-with-your-configuration)
-  * [Export or import database](#export-or-import-database)
+  * [Export and import database](#export-and-import-database)
     * [Export database](#export-database)
     * [Import database](#import-database)
   * [Show the local environment and workspace information](#show-the-local-environment-and-workspace-information)
   * [List all environments](#list-all-environments)
   * [Initial workspace](#initial-workspace)
-  * [Create project](#create-project)
-    * [Create a project based on a base template or existing code](#create-a-project-based-on-a-base-template-or-existing-code)
-    * [Create a project based on the Magento source code](#create-a-project-based-on-the-magento-source-code)
+  * [Create and setup project](#create-and-setup-project)
+    * [Create a new project based on a base template or framework skeleton](#create-a-new-project-based-on-a-base-template-or-framework-skeleton)
+    * [Create a new Magento project based on the source code or composer](#create-a-new-Magento-project-based-on-the-source-code-or-composer)
+    * [Build an existing project based on existing code and database](#build-an-existing-project-based-on-existing-code-and-database)
   * [Upgrade Shinetech Docker](#upgrade-shinetech-docker)
 
 ## Getting Started
@@ -34,7 +35,7 @@ pip3 install stdocker
 
 If you get error `ERROR: Could not find a version that satisfies the requirement`, please use the following command to install:
 ```shell
-python3 -m pip install stdocker==1.0.8
+python3 -m pip install stdocker==1.0.9
 ```
 
 It based on the internal docker project `Shinetech Docker`, please install it first. If you do not have permission to use Shinetech Docker, please ignore this package.
@@ -64,23 +65,34 @@ Options:
   --help                  Show this message and exit.
 
 Commands:
-  about         Show the local environment and workspace information
-  bash          Bash session for running container
-  build         Build local development environment with your configuration
-  compose       Execute sudo docker-compose * command
-  configure     Configure local environment, will guide you through...
-  database      Export or import database
-  envs          List all environments
-  exec          Execute sudo docker exec * command
-  init-magento  Create a project based on the Magento source code
-  init-project  Create a project based on a base template or existing code
-  restart       Restart specified docker service
-  run           Execute sudo docker * command
-  start         Launch docker services
-  status        List all running containers
-  stop          Stop docker services
-  upgrade       Upgrade Shinetech Docker
-  workspace     Initial workspace
+  about                   Show the local environment and workspace...
+  bash                    Bash session for running container
+  build                   Build local development environment with your...
+  compose                 Execute sudo docker-compose * command
+  configure               Configure local environment, will guide you...
+  create-magento-project  Create a new Magento project based on the...
+  create-project          Create a new project based on a base template...
+  database                Export or import database
+  envs                    List all environments
+  exec                    Execute sudo docker exec * command
+  restart                 Restart specified docker service
+  run                     Execute sudo docker * command
+  setup-project           Build a existing project based on existing code...
+  start                   Launch docker services
+  status                  List all running containers
+  stop                    Stop docker services
+  upgrade                 Upgrade Shinetech Docker
+  workspace               Initial workspace
+```
+
+For the detailed usage of each command, you can use the following command to view:
+
+```shell
+stdocker [COMMAND] --help
+```
+e.g:
+```shell
+stdocker create-project --help
 ```
 
 ### Run docker command
@@ -219,7 +231,7 @@ stdocker build
 stdocker build --env=magento_244
 ```
 
-### Export or import database
+### Export and import database
 
 ```shell
 stdocker database <ACTION{import|export}>
@@ -244,7 +256,7 @@ stdocker about
 You can see the following information:
 ```
 Current environment:
- - magento_244
+ - lamp
 Your workspace information:
  - Workspace: /home/sunfeng/stdocker
  - Project Directory: /home/sunfeng/stdocker/www
@@ -254,6 +266,7 @@ Your workspace information:
  - Apache Log: /home/sunfeng/stdocker/var/logs/apache2
  - SSL CA: /home/sunfeng/stdocker/config/services/ca
  - php.ini: /home/sunfeng/stdocker/config/services/php/php.ini
+ - Composer auth.json: /home/sunfeng/stdocker/config/services/composer/auth.json
  - MySQL Log: /home/sunfeng/stdocker/var/logs/mysql
 ```
 
@@ -295,42 +308,57 @@ It will initial your workspace to your home or specified directory, and update e
 stdocker workspace
 ```
 
-### Create project
+### Create and setup project
 
-#### Create a project based on a base template or existing code
+#### Create a new project based on a base template or framework skeleton
 
 ```shell
-stdocker init-project [OPTIONS]
+stdocker create-project [OPTIONS]
 ```
 
 Initial a Magento 2 project:
 ```shell
-stdocker init-project --platform=magento --name=m2project
+stdocker create-project --platform=magento --project-name=m2project --target-version=2.4.5
 ```
 
 Initial a Symfony project:
 ```shell
-stdocker init-project --platform=symfony --name=sfproject
+stdocker init-project --platform=symfony --project-name=sfproject
 ```
 
-#### Create a project based on the Magento source code
+#### Create a new Magento project based on the source code or composer
 
-Please download the Magento source code from the official website first.
+Please download the Magento source code from the official website first if use source code to create project.
 
 ```shell
-stdocker init-magento [OPTIONS]
+stdocker create-magento-project [OPTIONS]
 ```
 
-Create a Magento 2.4.5 project:
+Create a Magento 2.4.5 project with source code:
 ```shell
-stdocker init-magento --target-version=2.4.5 --source-code-file=/home/sunfeng/Downloads/adobe-commerce-2.4.5-2022-07-21-08-24-23.zip
+stdocker create-magento-project --target-version=2.4.5 --source-code-file=/home/sunfeng/Downloads/adobe-commerce-2.4.5-2022-07-21-08-24-23.zip
 ```
 
 Create a Magento 2.4.5 project with custom project name:
 ```shell
-stdocker init-magento --target-version=2.4.5 --source-code-file=/home/sunfeng/Downloads/adobe-commerce-2.4.5-2022-07-21-08-24-23.zip --project-name=testproject
+stdocker create-magento-project --target-version=2.4.5 --source-code-file=/home/sunfeng/Downloads/adobe-commerce-2.4.5-2022-07-21-08-24-23.zip --project-name=testproject
 ```
 
+Create a Magento 2.4.5 project with composer:
+```shell
+stdocker create-magento-project --target-version=2.4.5
+```
+
+#### Build an existing project based on existing code and database
+
+```shell
+stdocker setup-project [OPTIONS]
+```
+
+Setup HP project:
+```shell
+stdocker setup-project --project-name=hp --db-sql-file=/home/sunfeng/Downloads/20220824201501.sql --country=id
+```
 
 ### Upgrade Shinetech Docker
 
