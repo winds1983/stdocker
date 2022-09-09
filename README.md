@@ -155,13 +155,13 @@ sudo docker exec -it stdev_phpfpm_1 /bin/bash
 ### Log in to the specified server using SSH
 
 ```shell
-stdocker ssh <SERVICE>
+stdocker bash <SERVICE>
 ```
 
 e.g:
 ```shell
-stdocker ssh phpfpm
-stdocker ssh mysql
+stdocker bash phpfpm
+stdocker bash mysql
 ```
 This command is equivalent to:
 ```shell

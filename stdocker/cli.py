@@ -17,6 +17,7 @@ from .config import install_dir
 from .config import current_dir
 from .config import base_domain
 from .config import platforms
+from .config import projects
 
 
 """
@@ -221,13 +222,10 @@ def envs(ctx: click.Context) -> None:
 
 @cli.command()
 @click.pass_context
-@click.option('--platform', required=True, default='generic',
-              type=click.Choice(platforms),
-              help="Specifies the framework used by the project.")
 @click.option('--name', required=True,
-              callback=check_project_name,
+              type=click.Choice(projects),
               help="Specify project name.")
-@click.option('--db-sql-file', required=False,
+@click.option('--db-sql-file', required=True,
               help="SQL backup file for initializing the database.")
 @click.option('--country', required=False,
               help="Build project by country, such as HP project have multiple independent countries and regions.")
@@ -236,8 +234,8 @@ def envs(ctx: click.Context) -> None:
                    "This option takes effect if --country is not empty. "
                    "e.g: For HP project, If No will use hp.dev.php9.cc for all country sites, "
                    "if Yes will use <country>.hp.dev.php9.cc for different sites.")
-def init_project(ctx: click.Context, platform: Any, name: Any, db_sql_file: Any, country: Any, multiple_domain: Any) -> None:
-    """Create a project based on a base template or existing code"""
+def setup_project(ctx: click.Context, name: Any, db_sql_file: Any, country: Any, multiple_domain: Any) -> None:
+    """Build a existing project based on existing code and database"""
     working_dir = ctx.obj['WORKING_DIR']
     env_handler = EnvHandler(working_dir=working_dir)
     env_values = env_handler.get_env_values()
@@ -254,8 +252,8 @@ def init_project(ctx: click.Context, platform: Any, name: Any, db_sql_file: Any,
         click.echo(click.style(f"NOTE: The project directory {project_dir} already exists.", fg='cyan'))
         click.confirm('Do you confirm to override and create project?', abort=True)
 
-    command = 'bash bin/init_project.sh ' \
-              + current_dir + ' ' + workspace_dir + ' ' + webserver + ' ' + platform + ' ' + name
+    command = 'bash bin/setup_project.sh ' \
+              + current_dir + ' ' + workspace_dir + ' ' + webserver + ' ' + name
 
     if db_sql_file is not None:
         command += ' ' + db_sql_file
@@ -274,6 +272,40 @@ def init_project(ctx: click.Context, platform: Any, name: Any, db_sql_file: Any,
 
 @cli.command()
 @click.pass_context
+@click.option('--platform', required=True, default='generic',
+              type=click.Choice(platforms),
+              help="Specifies the framework used by the project.")
+@click.option('--name', required=True,
+              callback=check_project_name,
+              help="Specify project name.")
+@click.option('--target-version', required=False,
+              help="Specify framework version. e.g: 2.4.5, 2.4.4-p1 for Magento")
+def create_project(ctx: click.Context, platform: Any, name: Any, target_version: Any) -> None:
+    """Create a new project based on a base template or framework skeleton"""
+    working_dir = ctx.obj['WORKING_DIR']
+    env_handler = EnvHandler(working_dir=working_dir)
+    env_values = env_handler.get_env_values()
+    workspace_dir = env_values['WORKSPACE']
+    current_env_configs = env_handler.get_current_env_configs()
+    webserver = current_env_configs['services']['webserver']
+
+    domain = name + base_domain
+
+    project_dir = workspace_dir + '/www/' + domain
+    if os.path.exists(project_dir):
+        click.echo(click.style(f"NOTE: The project directory {project_dir} already exists.", fg='cyan'))
+        click.confirm('Do you confirm to override and create project?', abort=True)
+
+    command = 'bash bin/create_project.sh ' \
+              + current_dir + ' ' + workspace_dir + ' ' + webserver + ' ' + platform + ' ' + name
+    if target_version is not None:
+        command += ' ' + target_version
+
+    os.system(command)
+
+
+@cli.command()
+@click.pass_context
 @click.option('--target-version', required=True,
               help="Specify Magento version. e.g: 2.4.5, 2.4.4-p1")
 @click.option('--source-code-file', required=False,
@@ -283,8 +315,8 @@ def init_project(ctx: click.Context, platform: Any, name: Any, db_sql_file: Any,
 @click.option('--project-name', required=False,
               callback=check_project_name,
               help="Specify project name.")
-def init_magento(ctx: click.Context, target_version: Any, source_code_file: Any, project_name: Any) -> None:
-    """Create a project based on the Magento source code"""
+def create_magento_project(ctx: click.Context, target_version: Any, source_code_file: Any, project_name: Any) -> None:
+    """Create a new Magento project based on the source code or composer"""
     working_dir = ctx.obj['WORKING_DIR']
     env_handler = EnvHandler(working_dir=working_dir)
     env_values = env_handler.get_env_values()
@@ -304,7 +336,7 @@ def init_magento(ctx: click.Context, target_version: Any, source_code_file: Any,
         click.echo(click.style(f"NOTE: The Magento project {project_dir} already exists.", fg='cyan'))
         click.confirm('Do you confirm to override and create project?', abort=True)
 
-    command = 'bash bin/init_magento.sh ' \
+    command = 'bash bin/create_magento_project.sh ' \
               + current_dir + ' ' + workspace_dir + ' ' + webserver + ' ' + project_name + ' ' + target_version
     if source_code_file is not None:
         command += ' ' + source_code_file

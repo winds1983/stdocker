@@ -9,3 +9,5 @@ current_dir = os.getcwd()
 base_domain = '.dev.php9.cc'
 
 platforms = ['generic', 'magento', 'zend', 'symfony', 'laravel', 'yii', 'slim', 'wordpress']
+
+projects = ['hp']
