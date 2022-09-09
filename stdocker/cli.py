@@ -207,6 +207,7 @@ def about(ctx: click.Context) -> None:
     click.echo(click.style(f" - Apache Log: {env_values['APACHE_LOG_DIR']}", fg='cyan'))
     click.echo(click.style(f" - SSL CA: {env_values['SSL_CA_DIR']}", fg='cyan'))
     click.echo(click.style(f" - php.ini: {env_values['PHP_INI']}", fg='cyan'))
+    click.echo(click.style(f" - Composer auth.json: {env_values['COMPOSER_AUTH_FILE']}", fg='cyan'))
     click.echo(click.style(f" - MySQL Log: {env_values['MYSQL_LOG_DIR']}", fg='cyan'))
 
 
