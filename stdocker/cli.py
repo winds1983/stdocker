@@ -222,7 +222,7 @@ def envs(ctx: click.Context) -> None:
 
 @cli.command()
 @click.pass_context
-@click.option('--name', required=True,
+@click.option('--project-name', required=True,
               type=click.Choice(projects),
               help="Specify project name.")
 @click.option('--db-sql-file', required=True,
@@ -234,7 +234,7 @@ def envs(ctx: click.Context) -> None:
                    "This option takes effect if --country is not empty. "
                    "e.g: For HP project, If No will use hp.dev.php9.cc for all country sites, "
                    "if Yes will use <country>.hp.dev.php9.cc for different sites.")
-def setup_project(ctx: click.Context, name: Any, db_sql_file: Any, country: Any, multiple_domain: Any) -> None:
+def setup_project(ctx: click.Context, project_name: Any, db_sql_file: Any, country: Any, multiple_domain: Any) -> None:
     """Build a existing project based on existing code and database"""
     working_dir = ctx.obj['WORKING_DIR']
     env_handler = EnvHandler(working_dir=working_dir)
@@ -243,9 +243,9 @@ def setup_project(ctx: click.Context, name: Any, db_sql_file: Any, country: Any,
     current_env_configs = env_handler.get_current_env_configs()
     webserver = current_env_configs['services']['webserver']
 
-    domain = name + base_domain
+    domain = project_name + base_domain
     if multiple_domain and country is not None:
-        domain = name + '-' + country + base_domain
+        domain = project_name + '-' + country + base_domain
 
     project_dir = workspace_dir + '/www/' + domain
     if os.path.exists(project_dir):
@@ -253,7 +253,7 @@ def setup_project(ctx: click.Context, name: Any, db_sql_file: Any, country: Any,
         click.confirm('Do you confirm to override and create project?', abort=True)
 
     command = 'bash bin/setup_project.sh ' \
-              + current_dir + ' ' + workspace_dir + ' ' + webserver + ' ' + name
+              + current_dir + ' ' + workspace_dir + ' ' + webserver + ' ' + project_name
 
     if db_sql_file is not None:
         command += ' ' + db_sql_file
@@ -275,12 +275,12 @@ def setup_project(ctx: click.Context, name: Any, db_sql_file: Any, country: Any,
 @click.option('--platform', required=True, default='generic',
               type=click.Choice(platforms),
               help="Specifies the framework used by the project.")
-@click.option('--name', required=True,
+@click.option('--project-name', required=True,
               callback=check_project_name,
               help="Specify project name.")
 @click.option('--target-version', required=False,
               help="Specify framework version. e.g: 2.4.5, 2.4.4-p1 for Magento")
-def create_project(ctx: click.Context, platform: Any, name: Any, target_version: Any) -> None:
+def create_project(ctx: click.Context, platform: Any, project_name: Any, target_version: Any) -> None:
     """Create a new project based on a base template or framework skeleton"""
     working_dir = ctx.obj['WORKING_DIR']
     env_handler = EnvHandler(working_dir=working_dir)
@@ -289,7 +289,7 @@ def create_project(ctx: click.Context, platform: Any, name: Any, target_version:
     current_env_configs = env_handler.get_current_env_configs()
     webserver = current_env_configs['services']['webserver']
 
-    domain = name + base_domain
+    domain = project_name + base_domain
 
     project_dir = workspace_dir + '/www/' + domain
     if os.path.exists(project_dir):
@@ -297,7 +297,7 @@ def create_project(ctx: click.Context, platform: Any, name: Any, target_version:
         click.confirm('Do you confirm to override and create project?', abort=True)
 
     command = 'bash bin/create_project.sh ' \
-              + current_dir + ' ' + workspace_dir + ' ' + webserver + ' ' + platform + ' ' + name
+              + current_dir + ' ' + workspace_dir + ' ' + webserver + ' ' + platform + ' ' + project_name
     if target_version is not None:
         command += ' ' + target_version
 
