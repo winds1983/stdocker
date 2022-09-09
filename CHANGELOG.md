@@ -6,6 +6,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [1.0.9] - 2022-09-09
+
+### Added
+
+- Rebuild create and setup project command
+- Update project creation parameters
+- Add composer auth.json in about command
+- Update use cases
+
+
 ## [1.0.8] - 2022-09-08
 
 ### Added

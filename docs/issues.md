@@ -40,7 +40,7 @@ To avoid this situation, use Test PyPI to perform and check your upload first, b
 Update a new version and empty /dist/* then re-upload
 
 ```shell
-sudo rm -fr dist/*
+sudo rm -fr build/* dist/* stdocker.egg-info/*
 python3 setup.py sdist bdist_wheel
 twine upload --repository pypi dist/*
 ```
