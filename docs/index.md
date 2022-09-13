@@ -42,7 +42,7 @@ Build package:
 python3 setup.py sdist bdist_wheel
 ```
 
-Upload packge to https://pypi.org/project/stdocker/
+Upload package to https://pypi.org/project/stdocker/
 
 ```bash
 twine upload --repository pypi dist/*
