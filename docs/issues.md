@@ -63,6 +63,33 @@ python3 -m pip install stdocker==1.0.1
 
 * [Could not find a version that satisfies the requirement <package>](https://stackoverflow.com/questions/32302379/could-not-find-a-version-that-satisfies-the-requirement-package)
 
+### AttributeError: module 'lib' has no attribute 'X509_V_FLAG_CB_ISSUER_CHECK'
+
+```shell
+ls -ld /usr/local/lib/python3*/dist-packages/*
+dpkg --list | grep crypt | grep python3
+```
+
+* [How To Install python3-openssl on Ubuntu 20.04](https://installati.one/ubuntu/20.04/python3-openssl/)
+
+
+#### Solution
+
+1) Updated pyopenssl to 22.0.0 to fix the issue
+
+In standard requirements.txt:
+```shell
+pyopenssl==19.0.0 # BEFORE
+pyopenssl==22.0.0 # AFTER
+```
+
+2) Uninstall and reinstall pyopenssl
+```shell
+sudo apt-get remove python3-openssl
+# sudo apt-get -y autoremove --purge python3-openssl # Remove python3-openssl configuration, data, and all of its dependencies
+sudo apt-get -y install python3-openssl
+```
+
 
 ## Reference
 

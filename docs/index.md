@@ -28,6 +28,12 @@ Reference:
 sudo python3 setup.py install
 ```
 
+If cannot install latest package, please uninstall then try again:
+```shell
+sudo pip3 uninstall stdocker
+sudo python3 setup.py install
+```
+
 ### Publish package
 
 Build package:

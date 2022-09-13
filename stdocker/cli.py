@@ -40,7 +40,7 @@ def check_project_name(ctx, param, value):
 @click.option('-d', '--working-dir', default=install_dir,
               type=click.Path(dir_okay=True),
               help="Location of the installation directory, defaults to " + install_dir + ".")
-@click.version_option(version=__version__)
+@click.version_option(version=__version__, prog_name='Shinetech Docker CLI')
 @click.pass_context
 def cli(ctx: click.Context, working_dir: Any) -> None:
     """Shinetech Docker CLI"""
@@ -128,11 +128,11 @@ def stop(ctx: click.Context) -> None:
 def database(ctx: click.Context, action: Any, dbname: Any, backup_sql_file: Any) -> None:
     """Export or import database"""
     if dbname is None:
-        click.echo(click.style(f"Invalid database name", fg='red'))
+        click.echo(click.style(f"ERROR: Invalid database name", fg='red'))
         exit(1)
     if action == 'import':
         if backup_sql_file is None:
-            click.echo(click.style(f"Invalid source backup SQL file", fg='red'))
+            click.echo(click.style(f"ERROR: Invalid source backup SQL file", fg='red'))
             exit(1)
         os.system('bash bin/import_db.sh ' + dbname + ' ' + backup_sql_file + ' ' + current_dir)
     elif action == 'export':
@@ -193,10 +193,10 @@ def about(ctx: click.Context) -> None:
     env_handler = EnvHandler(working_dir=working_dir)
     env_values = env_handler.get_env_values()
 
-    click.echo(click.style(f"Current environment:", fg='yellow', bold=True))
+    click.echo(click.style(f"Current environment:", fg='green', bold=True))
     click.echo(click.style(f" - {env_values['DEFAULT_ENV']}", fg='cyan'))
 
-    click.echo(click.style(f"Your workspace information:", fg='yellow', bold=True))
+    click.echo(click.style(f"Your workspace information:", fg='green', bold=True))
     click.echo(click.style(f" - Workspace: {env_values['WORKSPACE']}", fg='cyan'))
     click.echo(
         click.style(f" - Project Directory: {env_values['DOCUMENT_ROOT']}", fg='cyan'))
@@ -250,7 +250,7 @@ def setup_project(ctx: click.Context, project_name: Any, db_sql_file: Any, count
 
     project_dir = workspace_dir + '/www/' + domain
     if os.path.exists(project_dir):
-        click.echo(click.style(f"NOTE: The project directory {project_dir} already exists.", fg='cyan'))
+        click.echo(click.style(f"WARNING: The project directory {project_dir} already exists.", fg='yellow'))
         click.confirm('Do you confirm to override and create project?', abort=True)
 
     command = 'bash bin/setup_project.sh ' \
@@ -294,7 +294,7 @@ def create_project(ctx: click.Context, platform: Any, project_name: Any, target_
 
     project_dir = workspace_dir + '/www/' + domain
     if os.path.exists(project_dir):
-        click.echo(click.style(f"NOTE: The project directory {project_dir} already exists.", fg='cyan'))
+        click.echo(click.style(f"WARNING: The project directory {project_dir} already exists.", fg='yellow'))
         click.confirm('Do you confirm to override and create project?', abort=True)
 
     command = 'bash bin/create_project.sh ' \
@@ -334,7 +334,7 @@ def create_magento_project(ctx: click.Context, target_version: Any, source_code_
 
     project_dir = workspace_dir + '/www/' + project_domain
     if os.path.exists(project_dir):
-        click.echo(click.style(f"NOTE: The Magento project {project_dir} already exists.", fg='cyan'))
+        click.echo(click.style(f"WARNING: The project directory {project_dir} already exists.", fg='yellow'))
         click.confirm('Do you confirm to override and create project?', abort=True)
 
     command = 'bash bin/create_magento_project.sh ' \
