@@ -30,12 +30,12 @@ Shinetech Docker CLI is a more intelligent, user-friendly and advanced configura
 ## Getting Started
 
 ```shell
-pip3 install stdocker
+sudo pip3 install stdocker
 ```
 
 If you get error `ERROR: Could not find a version that satisfies the requirement`, please use the following command to install:
 ```shell
-python3 -m pip install stdocker==1.0.9
+python3 -m pip install stdocker==1.0.10
 ```
 
 It based on the internal docker project `Shinetech Docker`, please install it first. If you do not have permission to use Shinetech Docker, please ignore this package.
