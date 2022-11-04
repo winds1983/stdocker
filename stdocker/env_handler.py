@@ -127,11 +127,11 @@ class EnvHandler(object):
         services = ['webserver', 'php', 'mysql', 'mariadb',
                     'phpmyadmin', 'elasticsearch', 'elasticvue',
                     'redis', 'phpredisadmin', 'rabbitmq', 'mailcatcher',
-                    'mongo', 'mongoexpress', 'postgres', 'pgweb', 'memcached']
+                    'mongo', 'mongoexpress', 'postgres', 'pgweb', 'memcached', 'webgrind']
         service_names = ['Web Server', 'PHP', 'MySQL', 'MariaDB',
                          'phpMyAdmin', 'Elasticsearch', 'Elasticvue',
                          'Redis', 'phpRedisAdmin', 'RabbitMQ', 'Mailcatcher',
-                         'MongoDB', 'Mongo Express', 'PostgreSQL', 'Pgweb', 'Memcached']
+                         'MongoDB', 'Mongo Express', 'PostgreSQL', 'Pgweb', 'Memcached', 'Webgrind']
 
         table = BeautifulTable(maxwidth=200)
         columns_headers = ['Env Code'] + service_names
@@ -151,8 +151,10 @@ class EnvHandler(object):
             for service in services:
                 status = 'N'
                 if service in item['services'].keys():
-                    if item['services'][service] is True:
+                    if item['services'][service] is True or item['services'][service] == 'yes':
                         status = 'Y'
+                    elif item['services'][service] is False or item['services'][service] == 'no':
+                        status = 'N'
                     else:
                         status = item['services'][service]
 
