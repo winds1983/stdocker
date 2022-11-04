@@ -228,6 +228,8 @@ def envs(ctx: click.Context) -> None:
               help="Specify project name.")
 @click.option('--db-sql-file', required=True,
               help="SQL backup file for initializing the database.")
+@click.option('--vendor-file', required=False,
+              help="Composer vendor file, pull from remote by default.")
 @click.option('--country', required=False,
               help="Build project by country, such as HP project have multiple independent countries and regions.")
 @click.option('--multiple-domain/--no-multiple-domain', default=False,
@@ -235,7 +237,7 @@ def envs(ctx: click.Context) -> None:
                    "This option takes effect if --country is not empty. "
                    "e.g: For HP project, If No will use hp.dev.php9.cc for all country sites, "
                    "if Yes will use <country>.hp.dev.php9.cc for different sites.")
-def setup_project(ctx: click.Context, project_name: Any, db_sql_file: Any, country: Any, multiple_domain: Any) -> None:
+def setup_project(ctx: click.Context, project_name: Any, db_sql_file: Any, vendor_file: Any, country: Any, multiple_domain: Any) -> None:
     """Build a existing project based on existing code and database"""
     working_dir = ctx.obj['WORKING_DIR']
     env_handler = EnvHandler(working_dir=working_dir)
@@ -258,6 +260,11 @@ def setup_project(ctx: click.Context, project_name: Any, db_sql_file: Any, count
 
     if db_sql_file is not None:
         command += ' ' + db_sql_file
+    else:
+        command += ' ""'
+
+    if vendor_file is not None:
+        command += ' ' + vendor_file
     else:
         command += ' ""'
 
