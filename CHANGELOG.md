@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [1.0.12] - 2022-11-10
+
+### Added
+
+- Add create js project command
+- Rebuild restart command for restarts all stopped and running services
+
+
 ## [1.0.11] - 2022-11-04
 
 ### Added
