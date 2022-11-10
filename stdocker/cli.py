@@ -16,7 +16,7 @@ from .version import __version__
 from .config import install_dir
 from .config import current_dir
 from .config import base_domain
-from .config import platforms
+from .config import php_platforms, js_platforms, js_languages
 from .config import projects
 
 
@@ -281,15 +281,15 @@ def setup_project(ctx: click.Context, project_name: Any, db_sql_file: Any, vendo
 @cli.command()
 @click.pass_context
 @click.option('--platform', required=True, default='generic',
-              type=click.Choice(platforms),
-              help="Specifies the framework used by the project.")
+              type=click.Choice(php_platforms),
+              help="Specifies the PHP framework used by the project.")
 @click.option('--project-name', required=True,
               callback=check_project_name,
               help="Specify project name.")
 @click.option('--target-version', required=False,
               help="Specify framework version. e.g: 2.4.5, 2.4.4-p1 for Magento")
-def create_project(ctx: click.Context, platform: Any, project_name: Any, target_version: Any) -> None:
-    """Create a new project based on a base template or framework skeleton"""
+def create_php_project(ctx: click.Context, platform: Any, project_name: Any, target_version: Any) -> None:
+    """Create a new PHP project based on a base template or framework skeleton"""
     working_dir = ctx.obj['WORKING_DIR']
     env_handler = EnvHandler(working_dir=working_dir)
     env_values = env_handler.get_env_values()
@@ -304,10 +304,45 @@ def create_project(ctx: click.Context, platform: Any, project_name: Any, target_
         click.echo(click.style(f"WARNING: The project directory {project_dir} already exists.", fg='yellow'))
         click.confirm('Do you confirm to override and create project?', abort=True)
 
-    command = 'bash bin/create_project.sh ' \
+    command = 'bash bin/create_php_project.sh ' \
               + current_dir + ' ' + workspace_dir + ' ' + webserver + ' ' + platform + ' ' + project_name
     if target_version is not None:
         command += ' ' + target_version
+
+    os.system(command)
+
+
+@cli.command()
+@click.pass_context
+@click.option('--platform', required=True,
+              type=click.Choice(js_platforms),
+              help="Specifies the Javascript framework used by the project.")
+@click.option('--project-name', required=True,
+              callback=check_project_name,
+              help="Specify project name.")
+@click.option('--programming-language', required=False, default='javascript',
+              type=click.Choice(js_languages),
+              help="Specify programming language. e.g: JavaScript or TypeScript")
+def create_js_project(ctx: click.Context, platform: Any, project_name: Any, programming_language: Any) -> None:
+    """Create a new Javascript project based on a base template or framework skeleton"""
+    working_dir = ctx.obj['WORKING_DIR']
+    env_handler = EnvHandler(working_dir=working_dir)
+    env_values = env_handler.get_env_values()
+    workspace_dir = env_values['WORKSPACE']
+    current_env_configs = env_handler.get_current_env_configs()
+    webserver = current_env_configs['services']['webserver']
+
+    domain = project_name + base_domain
+
+    project_dir = workspace_dir + '/www/' + domain
+    if os.path.exists(project_dir):
+        click.echo(click.style(f"WARNING: The project directory {project_dir} already exists.", fg='yellow'))
+        click.confirm('Do you confirm to override and create project?', abort=True)
+
+    command = 'bash bin/create_js_project.sh ' \
+              + current_dir + ' ' + workspace_dir + ' ' + webserver + ' ' + platform + ' ' + project_name
+    if programming_language is not None:
+        command += ' ' + programming_language
 
     os.system(command)
 

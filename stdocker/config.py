@@ -8,7 +8,10 @@ current_dir = os.getcwd()
 
 base_domain = '.dev.php9.cc'
 
-platforms = ['generic', 'magento', 'zend', 'symfony', 'laravel', 'yii',
-             'slim', 'cakephp', 'codeigniter', 'wordpress', 'drupal']
+php_platforms = ['generic', 'magento', 'zend', 'symfony', 'laravel', 'yii',
+                 'slim', 'cakephp', 'codeigniter', 'wordpress', 'drupal']
+
+js_platforms = ['angular', 'react', 'vue', 'nextjs', 'nestjs']
+js_languages = ['javascript', 'typescript']
 
 projects = ['hp']
