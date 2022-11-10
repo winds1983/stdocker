@@ -77,10 +77,18 @@ def compose(ctx: click.Context, command: Any) -> None:
 
 @cli.command()
 @click.pass_context
-@click.argument('service', required=True)
+@click.argument('service', required=False)
 def restart(ctx: click.Context, service: Any) -> None:
-    """Restart specified docker service"""
-    os.system('sudo docker-compose restart ' + service)
+    """Restarts all stopped and running services, or the specified services only."""
+    if service:
+        # https://docs.docker.com/engine/reference/commandline/compose_restart/
+        os.system('sudo docker-compose restart ' + service)
+    else:
+        # https://stackoverflow.com/questions/38221463/command-for-restarting-all-running-docker-containers
+        # sudo docker restart $(docker ps -a -q)
+        # sudo docker restart $(docker ps -q)
+        # Restart all running containers
+        os.system('sudo docker-compose restart')
 
 
 @cli.command()
