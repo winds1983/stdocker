@@ -22,10 +22,13 @@ Shinetech Docker CLI is a more intelligent, user-friendly and advanced configura
   * [List all environments](#list-all-environments)
   * [Initial workspace](#initial-workspace)
   * [Create and setup project](#create-and-setup-project)
-    * [Create a new project based on a base template or framework skeleton](#create-a-new-project-based-on-a-base-template-or-framework-skeleton)
-    * [Create a new Magento project based on the source code or composer](#create-a-new-Magento-project-based-on-the-source-code-or-composer)
+    * [Create a new PHP project based on a base template or framework skeleton](#create-a-new-php-project-based-on-a-base-template-or-framework-skeleton)
+    * [Create a new Magento project based on the source code or composer](#create-a-new-magento-project-based-on-the-source-code-or-composer)
+    * [Create a new Javascript project based on a base template or framework skeleton](#create-a-new-javascript-project-based-on-a-base-template-or-framework-skeleton)
     * [Build an existing project based on existing code and database](#build-an-existing-project-based-on-existing-code-and-database)
   * [Upgrade Shinetech Docker](#upgrade-shinetech-docker)
+  * [Switch network mode for a container](#switch-network-mode-for-a-container)
+  * [Edit or show configuration of docker-compose.yml](#edit-or-show-configuration-of-docker-compose-yml)
 
 ## Getting Started
 
@@ -68,19 +71,22 @@ Commands:
   about                   Show the local environment and workspace...
   bash                    Bash session for running container
   build                   Build local development environment with your...
-  compose                 Execute sudo docker-compose * command
   configure               Configure local environment, will guide you...
+  create-js-project       Create a new Javascript project based on a base...
   create-magento-project  Create a new Magento project based on the...
-  create-project          Create a new project based on a base template...
+  create-php-project      Create a new PHP project based on a base...
   database                Export or import database
+  docker-compose          Execute sudo docker-compose * command
+  docker-exec             Execute sudo docker exec * command
+  docker-run              Execute sudo docker * command
+  editor                  Edit or show configuration of docker-compose.yml
   envs                    List all environments
-  exec                    Execute sudo docker exec * command
-  restart                 Restart specified docker service
-  run                     Execute sudo docker * command
+  restart                 Restarts all stopped and running services, or...
   setup-project           Build a existing project based on existing code...
   start                   Launch docker services
   status                  List all running containers
   stop                    Stop docker services
+  switch-network          Configure network mode for a container
   upgrade                 Upgrade Shinetech Docker
   workspace               Initial workspace
 ```
@@ -99,13 +105,13 @@ stdocker create-project --help
 
 If you want to run `sudo docker *` command, you can use our command like this:
 ```shell
-stdocker run <DOCKER_COMMAND>
+stdocker docker-run <DOCKER_COMMAND>
 ```
 You can check `sudo docker` and see which original command we supported. Please use double quotes if `DOCKER_COMMAND` contains spaces or other parameters.
 
 e.g:
 ```shell
-stdocker run info
+stdocker docker-run info
 ```
 This command is equivalent to:
 ```shell
@@ -116,13 +122,13 @@ sudo docker info
 
 If you want to run `sudo docker-compose *` command, you can use our command like this:
 ```shell
-stdocker compose <DOCKER_COMPOSE_COMMAND>
+stdocker docker-compose <DOCKER_COMPOSE_COMMAND>
 ```
 You can check `sudo docker-compose` and see which original command we supported. Please use double quotes if `DOCKER_COMPOSE_COMMAND` contains spaces or other parameters.
 
 e.g:
 ```shell
-stdocker compose ps
+stdocker docker-compose ps
 ```
 This command is equivalent to:
 ```shell
@@ -151,13 +157,13 @@ You can also use `stdocker status` list all running docker containers.
 
 If you want to run `sudo docker exec *` command, you can use our command like this:
 ```shell
-stdocker exec <COMMAND>
+stdocker docker-exec <COMMAND>
 ```
 You can check `sudo docker exec --help` and see which original command we supported. Please use double quotes if `COMMAND` contains spaces or other parameters.
 
 e.g:
 ```shell
-stdocker exec "-it stdev_phpfpm_1 /bin/bash"
+stdocker docker-exec "-it stdev_phpfpm_1 /bin/bash"
 ```
 This command is equivalent to:
 ```shell
@@ -205,6 +211,7 @@ stdocker restart <SERVICE>
 
 e.g:
 ```shell
+stdocker restart # Restart all services
 stdocker restart nginx
 stdocker restart phpfpm
 ```
@@ -240,12 +247,12 @@ stdocker database <ACTION{import|export}>
 #### Export database:
 ```shell
 stdocker database export --dbname=test
-stdocker database export --dbname=test --backup_sql_file=test_20220823.sql
+stdocker database export --dbname=test --backup-sql-file=test_20220823.sql
 ```
 
 #### Import database:
 ```shell
-stdocker database import --dbname=test --backup_sql_file=test_20220823.sql
+stdocker database import --dbname=test --backup-sql-file=test_20220823.sql
 ```
 
 ### Show the local environment and workspace information
@@ -310,20 +317,22 @@ stdocker workspace
 
 ### Create and setup project
 
-#### Create a new project based on a base template or framework skeleton
+#### Create a new PHP project based on a base template or framework skeleton
 
 ```shell
-stdocker create-project [OPTIONS]
+stdocker create-php-project [OPTIONS]
 ```
 
-Initial a Magento 2 project:
+Create a Magento 2 project:
 ```shell
-stdocker create-project --platform=magento --project-name=m2project --target-version=2.4.5
+stdocker create-php-project --platform=magento --project-name=m2project --target-version=2.4.5
 ```
 
-Initial a Symfony project:
+e.g:
+
+Create a Symfony project:
 ```shell
-stdocker init-project --platform=symfony --project-name=sfproject
+stdocker create-php-project --platform=symfony --project-name=sfproject
 ```
 
 #### Create a new Magento project based on the source code or composer
@@ -333,6 +342,8 @@ Please download the Magento source code from the official website first if use s
 ```shell
 stdocker create-magento-project [OPTIONS]
 ```
+
+e.g:
 
 Create a Magento 2.4.5 project with source code:
 ```shell
@@ -347,6 +358,19 @@ stdocker create-magento-project --target-version=2.4.5 --source-code-file=/home/
 Create a Magento 2.4.5 project with composer:
 ```shell
 stdocker create-magento-project --target-version=2.4.5
+```
+
+#### Create a new Javascript project based on a base template or framework skeleton
+
+```shell
+stdocker create-js-project [OPTIONS]
+```
+
+e.g:
+
+Create a React project:
+```shell
+stdocker create-js-project --platform=react --project-name=reactproject
 ```
 
 #### Build an existing project based on existing code and database
@@ -374,6 +398,33 @@ stdocker upgrade --target_version=1.0.1
 If you want to restart docker services after upgrade, please use the following command:
 ```shell
 stdocker upgrade --force
+```
+
+### Switch network mode for a container
+
+```shell
+stdocker switch-network [OPTIONS] SERVICE
+```
+
+```shell
+stdocker switch-network phpfpm --network-mode=host
+stdocker switch-network phpfpm --network-mode=bridge
+```
+
+### Edit or show configuration of docker-compose.yml
+
+```shell
+stdocker editor [OPTIONS]
+```
+
+Show the configuration in terminal:
+```shell
+stdocker editor
+```
+
+Edit the configuration via vim:
+```shell
+stdocker editor --edit-mode
 ```
 
 

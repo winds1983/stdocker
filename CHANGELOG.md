@@ -10,7 +10,9 @@ project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Added
 
-- Add configure network command
+- Add switch docker container network command
+- Add edit or show configuration of docker-compose.yml command
+- Update command docs
 
 
 ## [1.0.12] - 2022-11-10

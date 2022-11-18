@@ -410,7 +410,7 @@ def status(ctx: click.Context) -> None:
               type=click.Choice(network_modes),
               help="The type of network a container uses.")
 def switch_network(ctx: click.Context, service: Any, network_mode: Any) -> None:
-    """Configure network mode for a container"""
+    """Switch network mode for a container"""
     os.system('bash bin/switch_network.sh ' + service + ' ' + network_mode)
 
 
@@ -418,7 +418,7 @@ def switch_network(ctx: click.Context, service: Any, network_mode: Any) -> None:
 @click.pass_context
 @click.option('--edit-mode/--no-edit-mode', default=False,
               help="Edit or show configuration of docker-compose.yml")
-def edit(ctx: click.Context, edit_mode: Any) -> None:
+def editor(ctx: click.Context, edit_mode: Any) -> None:
     """Edit or show configuration of docker-compose.yml"""
     if edit_mode:
         os.system('vim docker-compose.yml')
