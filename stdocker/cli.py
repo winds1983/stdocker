@@ -18,6 +18,7 @@ from .config import current_dir
 from .config import base_domain
 from .config import php_platforms, js_platforms, js_languages
 from .config import projects
+from .config import network_modes
 
 
 """
@@ -54,7 +55,7 @@ def cli(ctx: click.Context, working_dir: Any) -> None:
 @cli.command()
 @click.pass_context
 @click.argument('command', required=True)
-def run(ctx: click.Context, command: Any) -> None:
+def docker_run(ctx: click.Context, command: Any) -> None:
     """Execute sudo docker * command"""
     os.system('sudo docker ' + command)
 
@@ -62,7 +63,7 @@ def run(ctx: click.Context, command: Any) -> None:
 @cli.command()
 @click.pass_context
 @click.argument('command', required=True)
-def exec(ctx: click.Context, command: Any) -> None:
+def docker_exec(ctx: click.Context, command: Any) -> None:
     """Execute sudo docker exec * command"""
     os.system('sudo docker exec ' + command)
 
@@ -70,7 +71,7 @@ def exec(ctx: click.Context, command: Any) -> None:
 @cli.command()
 @click.pass_context
 @click.argument('command', required=True)
-def compose(ctx: click.Context, command: Any) -> None:
+def docker_compose(ctx: click.Context, command: Any) -> None:
     """Execute sudo docker-compose * command"""
     os.system('sudo docker-compose ' + command)
 
@@ -400,6 +401,17 @@ def create_magento_project(ctx: click.Context, target_version: Any, source_code_
 def status(ctx: click.Context) -> None:
     """List all running containers"""
     os.system('sudo docker-compose ps')
+
+
+@cli.command()
+@click.pass_context
+@click.argument('service', required=True)
+@click.option('--network-mode', required=False, default="bridge",
+              type=click.Choice(network_modes),
+              help="The type of network a container uses.")
+def switch_network(ctx: click.Context, service: Any, network_mode: Any) -> None:
+    """Configure network mode for a container"""
+    os.system('bash bin/switch_network.sh ' + service + ' ' + network_mode)
 
 
 def main():

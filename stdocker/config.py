@@ -15,3 +15,6 @@ js_platforms = ['angular', 'react', 'vue', 'nextjs', 'nestjs']
 js_languages = ['javascript', 'typescript']
 
 projects = ['hp']
+
+# Default is bridge network
+network_modes = ['bridge', 'overlay', 'host', 'ipvlan', 'macvlan']
