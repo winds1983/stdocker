@@ -414,6 +414,18 @@ def switch_network(ctx: click.Context, service: Any, network_mode: Any) -> None:
     os.system('bash bin/switch_network.sh ' + service + ' ' + network_mode)
 
 
+@cli.command()
+@click.pass_context
+@click.option('--edit-mode/--no-edit-mode', default=False,
+              help="Edit or show configuration of docker-compose.yml")
+def edit(ctx: click.Context, edit_mode: Any) -> None:
+    """Edit or show configuration of docker-compose.yml"""
+    if edit_mode:
+        os.system('vim docker-compose.yml')
+    else:
+        os.system('cat docker-compose.yml')
+
+
 def main():
     cli()
 
