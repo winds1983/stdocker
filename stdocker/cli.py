@@ -79,6 +79,32 @@ def docker_compose(ctx: click.Context, command: Any) -> None:
 @cli.command()
 @click.pass_context
 @click.argument('service', required=False)
+def start(ctx: click.Context, service: Any) -> None:
+    """Launch docker services"""
+    if service:
+        # https://docs.docker.com/engine/reference/commandline/compose_start/
+        os.system('sudo docker-compose start ' + service)
+    else:
+        click.echo(click.style(f"Start docker services", fg='green'))
+        os.system('bash bin/launch.sh')
+
+
+@cli.command()
+@click.pass_context
+@click.argument('service', required=False)
+def stop(ctx: click.Context, service: Any) -> None:
+    """Stop docker services"""
+    if service:
+        # https://docs.docker.com/engine/reference/commandline/compose_stop/
+        os.system('sudo docker-compose stop ' + service)
+    else:
+        click.echo(click.style(f"Stop docker services", fg='green'))
+        os.system('bash bin/stop.sh')
+
+
+@cli.command()
+@click.pass_context
+@click.argument('service', required=False)
 def restart(ctx: click.Context, service: Any) -> None:
     """Restarts all stopped and running services, or the specified services only."""
     if service:
@@ -107,22 +133,6 @@ def configure(ctx: click.Context) -> None:
 def build(ctx: click.Context, env: Any) -> None:
     """Build local development environment with your configuration"""
     os.system('bash builder.sh ' + env)
-
-
-@cli.command()
-@click.pass_context
-def start(ctx: click.Context) -> None:
-    """Launch docker services"""
-    click.echo(click.style(f"Start to launch docker services", fg='green'))
-    os.system('bash bin/launch.sh')
-
-
-@cli.command()
-@click.pass_context
-def stop(ctx: click.Context) -> None:
-    """Stop docker services"""
-    click.echo(click.style(f"Start to stop docker services", fg='green'))
-    os.system('bash bin/stop.sh')
 
 
 @cli.command()
