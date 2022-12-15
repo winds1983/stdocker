@@ -426,6 +426,23 @@ def editor(ctx: click.Context, edit_mode: Any) -> None:
         os.system('cat docker-compose.yml')
 
 
+@cli.command()
+@click.pass_context
+@click.argument('service', required=True)
+@click.option('--follow/--no-follow', default=False,
+              help="To tail the logs for specified container")
+def logs(ctx: click.Context, service: Any, follow: Any) -> None:
+    """Show or live tail docker container logs"""
+    # https://docs.docker.com/engine/reference/commandline/logs/
+    # https://www.papertrail.com/solution/tips/how-to-live-tail-docker-logs/
+    # List containers by docker container ls
+    container_name = 'stdev_' + service + '_1'  # e.g: stdev_phpfpm_1
+    if follow:
+        os.system('sudo docker container logs --follow ' + container_name)
+    else:
+        os.system('sudo docker container logs ' + container_name)
+
+
 def main():
     cli()
 

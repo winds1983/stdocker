@@ -29,6 +29,7 @@ Shinetech Docker CLI is a more intelligent, user-friendly and advanced configura
   * [Upgrade Shinetech Docker](#upgrade-shinetech-docker)
   * [Switch network mode for a container](#switch-network-mode-for-a-container)
   * [Edit or show configuration of docker-compose.yml](#edit-or-show-configuration-of-docker-compose-yml)
+  * [Show or live tail docker container logs](#show-or-live-tail-docker-container-logs)
 
 ## Getting Started
 
@@ -81,12 +82,13 @@ Commands:
   docker-run              Execute sudo docker * command
   editor                  Edit or show configuration of docker-compose.yml
   envs                    List all environments
+  logs                    Show or live tail docker container logs
   restart                 Restarts all stopped and running services, or...
   setup-project           Build a existing project based on existing code...
   start                   Launch docker services
   status                  List all running containers
   stop                    Stop docker services
-  switch-network          Configure network mode for a container
+  switch-network          Switch network mode for a container
   upgrade                 Upgrade Shinetech Docker
   workspace               Initial workspace
 ```
@@ -425,6 +427,22 @@ stdocker editor
 Edit the configuration via vim:
 ```shell
 stdocker editor --edit-mode
+```
+
+### Show or live tail docker container logs
+
+```shell
+stdocker logs [OPTIONS] SERVICE
+```
+
+Show all logs for specified container
+```shell
+stdocker logs phpfpm
+```
+
+Tail logs for specified container
+```shell
+stdocker logs phpfpm --follow
 ```
 
 
