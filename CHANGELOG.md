@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [1.0.16] - 2023-01-04
+
+### Added
+
+- Add Vue Storefront and NuxtJS project creation support
+
+
 ## [1.0.15] - 2022-12-16
 
 ### Added
