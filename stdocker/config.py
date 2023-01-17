@@ -11,7 +11,7 @@ base_domain = '.dev.php9.cc'
 php_platforms = ['generic', 'magento', 'zend', 'symfony', 'laravel', 'yii',
                  'slim', 'cakephp', 'codeigniter', 'wordpress', 'drupal']
 
-js_platforms = ['angular', 'react', 'vue', 'nextjs', 'nestjs', 'nuxtjs', 'vuestorefront']
+js_platforms = ['angular', 'react', 'vue', 'nextjs', 'nestjs', 'nuxtjs', 'vue_storefront', 'magento_pwa']
 js_languages = ['javascript', 'typescript']
 
 projects = ['hp']
