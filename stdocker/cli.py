@@ -386,7 +386,7 @@ def create_magento_project(ctx: click.Context, target_version: Any, source_code_
     current_env_configs = env_handler.get_current_env_configs()
     webserver = current_env_configs['services']['webserver']
 
-    if target_version is not None:
+    if target_version is not None and project_name is None:
         # 2.4.5 > 245
         version = convert_version(target_version)
         project_name = 'm' + version  # e.g: m245
