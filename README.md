@@ -30,6 +30,7 @@ Shinetech Docker CLI is a more intelligent, user-friendly and advanced configura
   * [Switch network mode for a container](#switch-network-mode-for-a-container)
   * [Edit or show configuration of docker-compose.yml](#edit-or-show-configuration-of-docker-compose-yml)
   * [Show or live tail docker container logs](#show-or-live-tail-docker-container-logs)
+  * [Install or upgrade docker compose](#install-or-upgrade-docker-compose)
 
 ## Getting Started
 
@@ -39,7 +40,7 @@ sudo pip3 install stdocker
 
 If you get error `ERROR: Could not find a version that satisfies the requirement`, please use the following command to install:
 ```shell
-python3 -m pip install stdocker==1.0.18
+python3 -m pip install stdocker==1.1.0
 ```
 
 It based on the internal docker project `Shinetech Docker`, please install it first. If you do not have permission to use Shinetech Docker, please ignore this package.
@@ -84,6 +85,7 @@ Commands:
   envs                    List all environments
   logs                    Show or live tail docker container logs
   restart                 Restarts all stopped and running services, or...
+  setup-docker-compose    Install or upgrade docker compose
   setup-project           Build a existing project based on existing code...
   start                   Launch docker services
   status                  List all running containers
@@ -444,6 +446,27 @@ Tail logs for specified container
 ```shell
 stdocker logs phpfpm --follow
 ```
+
+### Install or upgrade docker compose
+
+```shell
+stdocker setup-docker-compose [OPTIONS] [VERSION]
+```
+
+Install or upgrade to default version:
+```shell
+stdocker setup-docker-compose
+```
+
+Install or upgrade to default version:
+```shell
+stdocker setup-docker-compose 1.29.2
+stdocker setup-docker-compose v2.19.1
+```
+
+**NOTE:** Find the newest version from https://github.com/docker/compose/releases
+- v1: https://github.com/docker/compose/releases/download/1.29.2/docker-compose-Linux-x86_64
+- v2: https://github.com/docker/compose/releases/download/v2.19.1/docker-compose-linux-x86_64
 
 
 [pypi_badge]: https://badge.fury.io/py/stdocker.svg

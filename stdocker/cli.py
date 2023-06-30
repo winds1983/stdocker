@@ -453,6 +453,17 @@ def logs(ctx: click.Context, service: Any, follow: Any) -> None:
         os.system('sudo docker container logs ' + container_name)
 
 
+@cli.command()
+@click.pass_context
+@click.argument('version', required=False)
+def setup_docker_compose(ctx: click.Context, version: Any) -> None:
+    """Install or upgrade docker compose"""
+    if version:
+        os.system('bash bin/upgrade_docker_compose.sh ' + version)
+    else:
+        os.system('bash bin/upgrade_docker_compose.sh')
+
+
 def main():
     cli()
 
