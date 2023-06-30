@@ -459,9 +459,9 @@ def logs(ctx: click.Context, service: Any, follow: Any) -> None:
 def setup_docker_compose(ctx: click.Context, version: Any) -> None:
     """Install or upgrade docker compose"""
     if version:
-        os.system('bash bin/upgrade_docker_compose.sh ' + version)
+        os.system('bash bin/setup_docker_compose.sh ' + version)
     else:
-        os.system('bash bin/upgrade_docker_compose.sh')
+        os.system('bash bin/setup_docker_compose.sh')
 
 
 def main():

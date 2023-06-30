@@ -40,7 +40,7 @@ sudo pip3 install stdocker
 
 If you get error `ERROR: Could not find a version that satisfies the requirement`, please use the following command to install:
 ```shell
-python3 -m pip install stdocker==1.1.0
+python3 -m pip install stdocker==1.1.1
 ```
 
 It based on the internal docker project `Shinetech Docker`, please install it first. If you do not have permission to use Shinetech Docker, please ignore this package.
@@ -239,7 +239,7 @@ If `ENV` is empty, it will guide you to create your customized configuration, ot
 
 ```shell
 stdocker build
-stdocker build --env=magento_244
+stdocker build --env=magento_246
 ```
 
 ### Export and import database
