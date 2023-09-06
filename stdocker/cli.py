@@ -2,7 +2,7 @@ import os
 import sys
 import re
 from typing import Any, Dict, List
-from .utils import list_env_names, get_default_workspace, convert_version
+from .utils import list_env_names, get_default_workspace, convert_version_number
 from .env_handler import EnvHandler
 
 try:
@@ -16,7 +16,7 @@ from .version import __version__
 from .config import install_dir
 from .config import current_dir
 from .config import base_domain
-from .config import php_platforms, js_platforms, js_languages
+from .config import php_platforms, js_platforms, js_languages, magento_versions
 from .config import projects
 from .config import network_modes
 
@@ -368,8 +368,11 @@ def create_js_project(ctx: click.Context, platform: Any, project_name: Any, prog
 
 @cli.command()
 @click.pass_context
-@click.option('--target-version', required=True,
-              help="Specify Magento version. e.g: 2.4.5, 2.4.4-p1")
+@click.option('--version', required=False, default="enterprise",
+              type=click.Choice(magento_versions),
+              help="Specify Magento version, Adobe Commerce or Magento Open Source")
+@click.option('--version-number', required=True,
+              help="Specify Magento version number. e.g: 2.4.5, 2.4.4-p1")
 @click.option('--source-code-file', required=False,
               help="Specify Magento original source code file. "
                    "If not specified, composer will be used for installation, "
@@ -377,7 +380,7 @@ def create_js_project(ctx: click.Context, platform: Any, project_name: Any, prog
 @click.option('--project-name', required=False,
               callback=check_project_name,
               help="Specify project name.")
-def create_magento_project(ctx: click.Context, target_version: Any, source_code_file: Any, project_name: Any) -> None:
+def create_magento_project(ctx: click.Context, version: Any, version_number: Any, source_code_file: Any, project_name: Any) -> None:
     """Create a new Magento project based on the source code or composer"""
     working_dir = ctx.obj['WORKING_DIR']
     env_handler = EnvHandler(working_dir=working_dir)
@@ -386,10 +389,10 @@ def create_magento_project(ctx: click.Context, target_version: Any, source_code_
     current_env_configs = env_handler.get_current_env_configs()
     webserver = current_env_configs['services']['webserver']
 
-    if target_version is not None and project_name is None:
-        # 2.4.5 > 245
-        version = convert_version(target_version)
-        project_name = 'm' + version  # e.g: m245
+    if version_number is not None and project_name is None:
+        # Convert 2.4.5 to 245, remove special characters
+        new_version_number = convert_version_number(version_number)
+        project_name = 'm' + new_version_number  # e.g: m245
 
     project_domain = project_name + base_domain
 
@@ -399,7 +402,8 @@ def create_magento_project(ctx: click.Context, target_version: Any, source_code_
         click.confirm('Do you confirm to override and create project?', abort=True)
 
     command = 'bash bin/create_magento_project.sh ' \
-              + current_dir + ' ' + workspace_dir + ' ' + webserver + ' ' + project_name + ' ' + target_version
+              + current_dir + ' ' + workspace_dir + ' ' + webserver + ' ' + project_name + ' ' \
+              + version_number + ' ' + version
     if source_code_file is not None:
         command += ' ' + source_code_file
 

@@ -40,7 +40,7 @@ sudo pip3 install stdocker
 
 If you get error `ERROR: Could not find a version that satisfies the requirement`, please use the following command to install:
 ```shell
-python3 -m pip install stdocker==1.1.1
+python3 -m pip install stdocker==1.1.2
 ```
 
 It based on the internal docker project `Shinetech Docker`, please install it first. If you do not have permission to use Shinetech Docker, please ignore this package.
@@ -351,17 +351,32 @@ e.g:
 
 Create a Magento 2.4.5 project with source code:
 ```shell
-stdocker create-magento-project --target-version=2.4.5 --source-code-file=/home/sunfeng/Downloads/adobe-commerce-2.4.5-2022-07-21-08-24-23.zip
+stdocker create-magento-project --version-number=2.4.5 --source-code-file=/home/sunfeng/Downloads/adobe-commerce-2.4.5-2022-07-21-08-24-23.zip
 ```
 
 Create a Magento 2.4.5 project with custom project name:
 ```shell
-stdocker create-magento-project --target-version=2.4.5 --source-code-file=/home/sunfeng/Downloads/adobe-commerce-2.4.5-2022-07-21-08-24-23.zip --project-name=testproject
+stdocker create-magento-project --version-number=2.4.5 --source-code-file=/home/sunfeng/Downloads/adobe-commerce-2.4.5-2022-07-21-08-24-23.zip --project-name=testproject
 ```
 
 Create a Magento 2.4.5 project with composer:
 ```shell
-stdocker create-magento-project --target-version=2.4.5
+stdocker create-magento-project --version-number=2.4.5
+```
+
+Also, we can specify `Adobe Commerce` and `Magento Open Source` via `--version`:
+
+- `enterprise`: Adobe Commerce
+- `community`: Magento Open Source
+
+Create a Magento 2.4.5 project using Adobe Commerce with composer:
+```shell
+stdocker create-magento-project --version=enterprise --version-number=2.4.5
+```
+
+Create a Magento 2.4.5 project using Magento Open Source with composer:
+```shell
+stdocker create-magento-project --version=community --version-number=2.4.5
 ```
 
 #### Create a new Javascript project based on a base template or framework skeleton

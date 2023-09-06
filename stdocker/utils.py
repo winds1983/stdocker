@@ -18,11 +18,11 @@ def get_default_workspace():
 
 
 """
-Convert version
+Convert version number, remove special characters
 e.g: 
 2.4.5 > 245
 2.4.3-p2 > 243p2
 """
-def convert_version(version):
+def convert_version_number(version):
     version = version.replace(".", "").replace("-", "").replace("_", "")
     return version

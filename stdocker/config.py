@@ -14,6 +14,10 @@ php_platforms = ['generic', 'magento', 'zend', 'symfony', 'laravel', 'yii',
 js_platforms = ['angular', 'react', 'vue', 'nextjs', 'nestjs', 'nuxtjs', 'vue_storefront', 'magento_pwa']
 js_languages = ['javascript', 'typescript']
 
+# enterprise = Adobe Commerce
+# community = Magento Open Source
+magento_versions = ['enterprise', 'community']
+
 projects = ['hp']
 
 # Default is bridge network
