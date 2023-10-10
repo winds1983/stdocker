@@ -450,7 +450,10 @@ def logs(ctx: click.Context, service: Any, follow: Any) -> None:
     # https://docs.docker.com/engine/reference/commandline/logs/
     # https://www.papertrail.com/solution/tips/how-to-live-tail-docker-logs/
     # List containers by docker container ls
-    container_name = 'stdev_' + service + '_1'  # e.g: stdev_phpfpm_1
+    # Use for docker-compose v1
+    #container_name = 'stdev_' + service + '_1'  # e.g: stdev-phpfpm-1
+    # Use for docker-compose v2
+    container_name = 'stdev-' + service + '-1'  # e.g: stdev-phpfpm-1
     if follow:
         os.system('sudo docker container logs --follow ' + container_name)
     else:

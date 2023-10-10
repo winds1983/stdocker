@@ -40,7 +40,7 @@ sudo pip3 install stdocker
 
 If you get error `ERROR: Could not find a version that satisfies the requirement`, please use the following command to install:
 ```shell
-python3 -m pip install stdocker==1.1.3
+python3 -m pip install stdocker==1.1.4
 ```
 
 It based on the internal docker project `Shinetech Docker`, please install it first. If you do not have permission to use Shinetech Docker, please ignore this package.
@@ -140,18 +140,25 @@ sudo docker-compose ps
 ```
 You will see the following result:
 ```
-        Name                       Command               State                                                           Ports                                                         
----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-stdev_elasticsearch_1   /bin/tini -- /usr/local/bi ...   Up      0.0.0.0:9200->9200/tcp,:::9200->9200/tcp, 9300/tcp                                                                    
-stdev_elasticvue_1      nginx -g daemon off;             Up      80/tcp, 0.0.0.0:8082->8080/tcp,:::8082->8080/tcp                                                                      
-stdev_mailcatcher_1     mailcatcher --smtp-ip=0.0. ...   Up      1025/tcp, 0.0.0.0:1080->1080/tcp,:::1080->1080/tcp                                                                    
-stdev_mysql_1           docker-entrypoint.sh mysqld      Up      0.0.0.0:3306->3306/tcp,:::3306->3306/tcp, 33060/tcp                                                                   
-stdev_nginx_1           /docker-entrypoint.sh /usr ...   Up      0.0.0.0:443->443/tcp,:::443->443/tcp, 0.0.0.0:6081->6081/tcp,:::6081->6081/tcp, 0.0.0.0:80->80/tcp,:::80->80/tcp      
-stdev_phpfpm_1          /docker-entrypoint.sh php-fpm    Up      9000/tcp                                                                                                              
-stdev_phpmyadmin_1      /docker-entrypoint.sh apac ...   Up      0.0.0.0:8443->443/tcp,:::8443->443/tcp, 0.0.0.0:8080->80/tcp,:::8080->80/tcp                                          
-stdev_phpredisadmin_1   tini -- php -S 0.0.0.0:80        Up      0.0.0.0:8089->80/tcp,:::8089->80/tcp                                                                                  
-stdev_rabbitmq_1        docker-entrypoint.sh rabbi ...   Up      15671/tcp, 0.0.0.0:15672->15672/tcp,:::15672->15672/tcp, 15691/tcp, 15692/tcp, 25672/tcp, 4369/tcp, 5671/tcp, 5672/tcp
-stdev_redis_1           docker-entrypoint.sh redis ...   Up      0.0.0.0:6379->6379/tcp,:::6379->6379/tcp
+NAME                    IMAGE                                                       COMMAND                                                          SERVICE         CREATED          STATUS          PORTS
+stdev-elasticsearch-1   stdev-elasticsearch                                         "/bin/tini -- /usr/local/bin/docker-entrypoint.sh eswrapper"     elasticsearch   20 minutes ago   Up 20 minutes   0.0.0.0:9200->9200/tcp, :::9200->9200/tcp, 9300/tcp
+stdev-elasticvue-1      cars10/elasticvue:0.42.1                                    "nginx -g 'daemon off;'"                                         elasticvue      20 minutes ago   Up 20 minutes   80/tcp, 0.0.0.0:8082->8080/tcp, :::8082->8080/tcp
+stdev-golang-1          golang:1.20                                                 "tail -F anything"                                               golang          20 minutes ago   Up 20 minutes   
+stdev-mailcatcher-1     stdev-mailcatcher                                           "mailcatcher --smtp-ip=0.0.0.0 --http-ip=0.0.0.0 --foreground"   mailcatcher     20 minutes ago   Up 20 minutes   1025/tcp, 0.0.0.0:1080->1080/tcp, :::1080->1080/tcp
+stdev-memcached-1       memcached                                                   "docker-entrypoint.sh memcached"                                 memcached       20 minutes ago   Up 20 minutes   0.0.0.0:11211->11211/tcp, :::11211->11211/tcp
+stdev-mongo-1           registry.cn-beijing.aliyuncs.com/shinetech/mongo:5.0.5      "docker-entrypoint.sh mongod"                                    mongo           20 minutes ago   Up 20 minutes   27017/tcp
+stdev-mongoexpress-1    mongo-express                                               "tini -- /docker-entrypoint.sh mongo-express"                    mongoexpress    20 minutes ago   Up 20 minutes   0.0.0.0:8081->8081/tcp, :::8081->8081/tcp
+stdev-mysql-1           stdev-mysql                                                 "docker-entrypoint.sh mysqld"                                    mysql           20 minutes ago   Up 20 minutes   0.0.0.0:3306->3306/tcp, :::3306->3306/tcp, 33060/tcp
+stdev-nginx-1           stdev-nginx                                                 "/docker-entrypoint.sh /usr/bin/supervisord"                     nginx           20 minutes ago   Up 20 minutes   0.0.0.0:80->80/tcp, :::80->80/tcp, 0.0.0.0:443->443/tcp, :::443->443/tcp, 0.0.0.0:6081->6081/tcp, :::6081->6081/tcp
+stdev-pgweb-1           sosedoff/pgweb                                              "/usr/bin/pgweb --bind=0.0.0.0 --listen=8081"                    pgweb           20 minutes ago   Up 20 minutes   0.0.0.0:8083->8081/tcp, :::8083->8081/tcp
+stdev-phpfpm-1          stdev-phpfpm                                                "/docker-entrypoint.sh php-fpm"                                  phpfpm          20 minutes ago   Up 20 minutes   9000/tcp
+stdev-phpmyadmin-1      phpmyadmin:latest                                           "/docker-entrypoint.sh apache2-foreground"                       phpmyadmin      20 minutes ago   Up 20 minutes   0.0.0.0:8080->80/tcp, :::8080->80/tcp, 0.0.0.0:8443->443/tcp, :::8443->443/tcp
+stdev-phpredisadmin-1   erikdubbelboer/phpredisadmin:latest                         "tini -- php -S 0.0.0.0:80"                                      phpredisadmin   20 minutes ago   Up 20 minutes   0.0.0.0:8089->80/tcp, :::8089->80/tcp
+stdev-postgres-1        postgres                                                    "docker-entrypoint.sh postgres"                                  postgres        20 minutes ago   Up 20 minutes   5432/tcp
+stdev-python-1          python:3.9                                                  "tail -F anything"                                               python          20 minutes ago   Up 20 minutes   
+stdev-rabbitmq-1        rabbitmq:3.9-management                                     "docker-entrypoint.sh rabbitmq-server"                           rabbitmq        20 minutes ago   Up 20 minutes   4369/tcp, 5671-5672/tcp, 15671/tcp, 15691-15692/tcp, 25672/tcp, 0.0.0.0:15672->15672/tcp, :::15672->15672/tcp
+stdev-redis-1           redis:6.2.6                                                 "docker-entrypoint.sh redis-server --appendonly no"              redis           20 minutes ago   Up 20 minutes   0.0.0.0:6379->6379/tcp, :::6379->6379/tcp
+stdev-webgrind-1        registry.cn-beijing.aliyuncs.com/shinetech/webgrind:1.9.2   "docker-php-entrypoint apache2-foreground"                       webgrind        20 minutes ago   Up 20 minutes   0.0.0.0:8084->80/tcp, :::8084->80/tcp
 ```
 
 **NOTE:**
@@ -167,11 +174,11 @@ You can check `sudo docker exec --help` and see which original command we suppor
 
 e.g:
 ```shell
-stdocker docker-exec "-it stdev_phpfpm_1 /bin/bash"
+stdocker docker-exec "-it stdev-phpfpm-1 /bin/bash"
 ```
 This command is equivalent to:
 ```shell
-sudo docker exec -it stdev_phpfpm_1 /bin/bash
+sudo docker exec -it stdev-phpfpm-1 /bin/bash
 ```
 
 ### Log in to the specified server using SSH
@@ -187,8 +194,8 @@ stdocker bash mysql
 ```
 This command is equivalent to:
 ```shell
-sudo docker exec -it stdev_phpfpm_1 /bin/bash
-sudo docker exec -it stdev_mysql_1 /bin/bash
+sudo docker exec -it stdev-phpfpm-1 /bin/bash
+sudo docker exec -it stdev-mysql-1 /bin/bash
 ```
 
 ### Launch docker services

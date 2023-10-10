@@ -6,7 +6,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## [1.1.3] - 2023-10-10
+## [1.1.4] - 2023-10-10
+
+### Added
+
+- Upgrade docker compose to v2
+- Fix docker container name with -, and _ only support for docker compose v1
+
+
+## [1.1.3] - 2023-10-09
 
 ### Added
 
