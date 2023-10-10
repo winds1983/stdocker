@@ -121,6 +121,10 @@ class EnvHandler(object):
         return env_files
 
     def list_env_table(self):
+        """
+        https://beautifultable.readthedocs.io/en/latest/quickstart.html#inserting-rows-and-columns
+        :return:
+        """
         current_env = self.get_current_env()
         customized_envs = self.list_customized_detailed_envs()
         # env_names = self.list_customized_env_names()
@@ -135,7 +139,8 @@ class EnvHandler(object):
                          'MongoDB', 'Mongo Express', 'PostgreSQL', 'Pgweb', 'Memcached', 'Webgrind',
                          'Python', 'Golang']
 
-        table = BeautifulTable(maxwidth=210)
+        # Set detect_numerics=False, will make 1.20 display correctly
+        table = BeautifulTable(maxwidth=210, detect_numerics=False)
         columns_headers = ['Env Code'] + service_names
 
         env_detail_names = []
@@ -169,5 +174,7 @@ class EnvHandler(object):
 
         table.rows.header = env_detail_names
         table.columns.header = columns_headers
+        table.rows.sort('Env Code')  # Sorting based on a Column
+        table.set_style(BeautifulTable.STYLE_GRID)
 
         return table
