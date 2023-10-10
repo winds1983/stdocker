@@ -270,7 +270,7 @@ Current environment:
  - lamp
 Your workspace information:
  - Workspace: /home/sunfeng/stdocker
- - Project Directory: /home/sunfeng/stdocker/www
+ - Project Directory: /home/sunfeng/stdocker/app
  - Nginx VHosts: /home/sunfeng/stdocker/config/services/nginx/sites-enabled
  - Nginx Log: /home/sunfeng/stdocker/var/logs/nginx
  - Apache VHosts: /home/sunfeng/stdocker/config/services/apache/sites-enabled
