@@ -132,12 +132,12 @@ class EnvHandler(object):
                     'phpmyadmin', 'elasticsearch', 'elasticvue',
                     'redis', 'phpredisadmin', 'rabbitmq', 'mailcatcher',
                     'mongo', 'mongoexpress', 'postgres', 'pgweb', 'memcached', 'webgrind',
-                    'python', 'golang']
+                    'node', 'python', 'golang']
         service_names = ['Web Server', 'PHP', 'MySQL', 'MariaDB',
                          'phpMyAdmin', 'Elasticsearch', 'Elasticvue',
                          'Redis', 'phpRedisAdmin', 'RabbitMQ', 'Mailcatcher',
                          'MongoDB', 'Mongo Express', 'PostgreSQL', 'Pgweb', 'Memcached', 'Webgrind',
-                         'Python', 'Golang']
+                         'Node', 'Python', 'Golang']
 
         # Set detect_numerics=False, will make 1.20 display correctly
         table = BeautifulTable(maxwidth=210, detect_numerics=False)
