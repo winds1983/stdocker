@@ -11,6 +11,7 @@ project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Added
 
 - Add C++ and Rust to env list
+- Add bash commands are compatible with container name and service name
 
 
 ## [1.1.6] - 2023-10-26

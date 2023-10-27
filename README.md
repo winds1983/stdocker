@@ -192,6 +192,12 @@ e.g:
 stdocker bash phpfpm
 stdocker bash mysql
 ```
+Or, Bash commands are compatible with container name and service:
+```shell
+stdocker bash stdev-phpfpm-1
+stdocker bash stdev-mysql-1
+```
+
 This command is equivalent to:
 ```shell
 sudo docker exec -it stdev-phpfpm-1 /bin/bash
