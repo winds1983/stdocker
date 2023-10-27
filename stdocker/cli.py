@@ -166,6 +166,10 @@ def database(ctx: click.Context, action: Any, dbname: Any, backup_sql_file: Any)
 @click.argument('service', required=True)
 def bash(ctx: click.Context, service: Any) -> None:
     """Bash session for running container"""
+    if 'stdev-' in service:
+        service_array = service.split('-')
+        service = service_array[1]
+
     os.system('bash bin/container_bash.sh ' + service)
 
 
