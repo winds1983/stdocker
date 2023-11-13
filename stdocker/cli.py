@@ -141,7 +141,7 @@ def build(ctx: click.Context, env: Any) -> None:
 @click.option('--database-type', required=False, default="mysql",
               type=click.Choice(databases),
               help="Specify database type. e.g: mysql, mariadb, postgres.")
-@click.option('--database-version', required=False, default="8.0",
+@click.option('--database-version', required=False,
               help="Specify database version. e.g: MySQL(8.0, 5.7), MariaDB(10.6, 11.1), PostgreSQL(15.4, 16.0).")
 @click.argument('action', type=click.Choice(['import', 'export']), required=True)
 def database(ctx: click.Context, action: Any, dbname: Any, backup_sql_file: Any, database_type: Any, database_version: Any) -> None:
@@ -153,12 +153,19 @@ def database(ctx: click.Context, action: Any, dbname: Any, backup_sql_file: Any,
         if backup_sql_file is None:
             click.echo(click.style(f"ERROR: Invalid source backup SQL file", fg='red'))
             exit(1)
-        os.system('bash bin/import_db.sh ' + database_type + ' ' + database_version + ' ' + dbname
-                  + ' ' + backup_sql_file + ' ' + current_dir)
+        command = 'bash bin/import_db.sh ' + database_type + ' ' + dbname + ' ' + backup_sql_file + ' ' + current_dir
+        if database_version is not None:
+            command += ' ' + database_version
+        os.system(command)
     elif action == 'export':
-        command = 'bash bin/export_db.sh ' + database_type + ' ' + database_version + ' ' + dbname + ' ' + current_dir
+        command = 'bash bin/export_db.sh ' + database_type + ' ' + dbname + ' ' + current_dir
+        if database_version is not None:
+            command += ' ' + database_version
         if backup_sql_file is not None:
-            command += ' ' + backup_sql_file
+            if database_version is not None:
+                command += ' ' + backup_sql_file
+            else:
+                command += ' "" ' + backup_sql_file
         os.system(command)
 
 
@@ -388,8 +395,8 @@ def create_js_project(ctx: click.Context, platform: Any, project_name: Any, prog
 @click.option('--database-type', required=False, default="mysql",
               type=click.Choice(databases),
               help="Specify database type. e.g: mysql, mariadb.")
-@click.option('--database-version', required=False, default="8.0",
-              help="Specify database version. e.g: MySQL(8.0, 5.7), MariaDB(10.6, 11.1).")
+@click.option('--database-version', required=False,
+              help="Specify database version. e.g: MySQL(8.0, 5.7), MariaDB(10.6, 11.1), PostgreSQL(15.4, 16.0).")
 def create_magento_project(ctx: click.Context, version: Any, version_number: Any, source_code_file: Any,
                            project_name: Any, database_type: Any, database_version: Any) -> None:
     """Create a new Magento project based on the source code or composer"""
@@ -416,7 +423,10 @@ def create_magento_project(ctx: click.Context, version: Any, version_number: Any
               + current_dir + ' ' + workspace_dir + ' ' + webserver + ' ' + project_name + ' ' \
               + version_number + ' ' + version + ' ' + database_type + ' ' + database_version
     if source_code_file is not None:
-        command += ' ' + source_code_file
+        if database_version is not None:
+            command += ' ' + source_code_file
+        else:
+            command += ' "" ' + source_code_file
 
     os.system(command)
 
