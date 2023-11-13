@@ -8,6 +8,13 @@ project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [1.1.9] - 2023-11-13
 
+### Fixed
+
+- Fix package issues for publish and debug
+
+
+## [1.1.9] - 2023-11-13
+
 ### Added
 
 - Add database type and version for database import and export
