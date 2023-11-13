@@ -22,3 +22,5 @@ projects = ['hp']
 
 # Default is bridge network
 network_modes = ['bridge', 'overlay', 'host', 'ipvlan', 'macvlan']
+
+databases = ['mysql', 'mariadb', 'postgres']

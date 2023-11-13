@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [1.1.9] - 2023-11-13
+
+### Added
+
+- Add database type and version for database import and export
+- Add database type and version for create Magento project
+
+
 ## [1.1.8] - 2023-10-31
 
 ### Added

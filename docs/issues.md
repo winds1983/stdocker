@@ -91,6 +91,25 @@ sudo apt-get -y install python3-openssl
 ```
 
 
+### SetuptoolsDeprecationWarning: setup.py install is deprecated. Use build and pip and other standards-based tools.
+
+```shell
+running install
+/usr/lib/python3/dist-packages/setuptools/command/install.py:34: SetuptoolsDeprecationWarning: setup.py install is deprecated. Use build and pip and other standards-based tools.
+  warnings.warn(
+/usr/lib/python3/dist-packages/setuptools/command/easy_install.py:158: EasyInstallDeprecationWarning: easy_install command is deprecated. Use build and pip and other standards-based tools.
+  warnings.warn(
+```
+
+#### Solution
+
+```shell
+sudo pip install setuptools==58.2.0
+```
+
+* ['setup.py install is deprecated' warning shows up every time I open a terminal in VSCode](https://stackoverflow.com/questions/73257839/setup-py-install-is-deprecated-warning-shows-up-every-time-i-open-a-terminal-i)
+
+
 ## Reference
 
 * [Docker 命令大全](https://www.runoob.com/docker/docker-command-manual.html)
