@@ -13,12 +13,7 @@ except ImportError:
     sys.exit(1)
 
 from .version import __version__
-from .config import install_dir
-from .config import current_dir
-from .config import base_domain
-from .config import php_platforms, js_platforms, js_languages, magento_versions
-from .config import projects
-from .config import network_modes
+from .config import *
 
 
 """
@@ -143,8 +138,13 @@ def build(ctx: click.Context, env: Any) -> None:
               help="Specifies the backup SQL file path, "
                    "which can be used for imported source file and exported target file or directory. "
                    "The default is the specified file in the current directory.")
+@click.option('--database-type', required=False, default="mysql",
+              type=click.Choice(projects),
+              help="Specify database type. e.g: mysql, mariadb, postgres.")
+@click.option('--database-version', required=False, default="8.0",
+              help="Specify database version. e.g: MySQL(8.0, 5.7), MariaDB(10.6, 11.1), PostgreSQL(15.4, 16.0).")
 @click.argument('action', type=click.Choice(['import', 'export']), required=True)
-def database(ctx: click.Context, action: Any, dbname: Any, backup_sql_file: Any) -> None:
+def database(ctx: click.Context, action: Any, dbname: Any, backup_sql_file: Any, database_type: Any, database_version: Any) -> None:
     """Export or import database"""
     if dbname is None:
         click.echo(click.style(f"ERROR: Invalid database name", fg='red'))
@@ -153,9 +153,10 @@ def database(ctx: click.Context, action: Any, dbname: Any, backup_sql_file: Any)
         if backup_sql_file is None:
             click.echo(click.style(f"ERROR: Invalid source backup SQL file", fg='red'))
             exit(1)
-        os.system('bash bin/import_db.sh ' + dbname + ' ' + backup_sql_file + ' ' + current_dir)
+        os.system('bash bin/import_db.sh ' + database_type + ' ' + database_version + ' ' + dbname
+                  + ' ' + backup_sql_file + ' ' + current_dir)
     elif action == 'export':
-        command = 'bash bin/export_db.sh ' + dbname + ' ' + current_dir
+        command = 'bash bin/export_db.sh ' + database_type + ' ' + database_version + ' ' + dbname + ' ' + current_dir
         if backup_sql_file is not None:
             command += ' ' + backup_sql_file
         os.system(command)
@@ -385,11 +386,12 @@ def create_js_project(ctx: click.Context, platform: Any, project_name: Any, prog
               callback=check_project_name,
               help="Specify project name.")
 @click.option('--database-type', required=False, default="mysql",
-              help="Specify database type. NOTE: Use docker service name to define the database type, "
-                   "such as mysql, mysql82, mariadb, mariadb106, etc.")
-def create_magento_project(ctx: click.Context,
-                           version: Any, version_number: Any,
-                           source_code_file: Any, project_name: Any, database_type: Any) -> None:
+              type=click.Choice(databases),
+              help="Specify database type. e.g: mysql, mariadb.")
+@click.option('--database-version', required=False, default="8.0",
+              help="Specify database version. e.g: MySQL(8.0, 5.7), MariaDB(10.6, 11.1).")
+def create_magento_project(ctx: click.Context, version: Any, version_number: Any, source_code_file: Any,
+                           project_name: Any, database_type: Any, database_version: Any) -> None:
     """Create a new Magento project based on the source code or composer"""
     working_dir = ctx.obj['WORKING_DIR']
     env_handler = EnvHandler(working_dir=working_dir)
@@ -412,7 +414,7 @@ def create_magento_project(ctx: click.Context,
 
     command = 'bash bin/create_magento_project.sh ' \
               + current_dir + ' ' + workspace_dir + ' ' + webserver + ' ' + project_name + ' ' \
-              + version_number + ' ' + version + ' ' + database_type
+              + version_number + ' ' + version + ' ' + database_type + ' ' + database_version
     if source_code_file is not None:
         command += ' ' + source_code_file
 
