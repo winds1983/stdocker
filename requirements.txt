@@ -7,3 +7,4 @@ click
 requests
 beautifultable
 termcolor
+setuptools==58.2.0

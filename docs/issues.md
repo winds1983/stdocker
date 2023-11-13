@@ -104,10 +104,31 @@ running install
 #### Solution
 
 ```shell
-sudo pip install setuptools==58.2.0
+pip3 uninstall setuptools
+sudo pip3 uninstall setuptools
+sudo pip3 install setuptools==58.2.0
 ```
 
 * ['setup.py install is deprecated' warning shows up every time I open a terminal in VSCode](https://stackoverflow.com/questions/73257839/setup-py-install-is-deprecated-warning-shows-up-every-time-i-open-a-terminal-i)
+
+
+### error: invalid command 'bdist_wheel'
+
+```shell
+sudo pip3 install -U pip wheel setuptools
+```
+
+- [unable to make a python3 wheel because bdist_wheel is an invalid command](https://stackoverflow.com/questions/70459113/unable-to-make-a-python3-wheel-because-bdist-wheel-is-an-invalid-command)
+
+
+### error: Cannot update time stamp of directory 'stdocker.egg-info'
+
+```shell
+sudo pip3 install --upgrade setuptools pip
+```
+
+- [What does a "Could not find .egg-info directory in install record" from pip mean?](https://stackoverflow.com/questions/26091641/what-does-a-could-not-find-egg-info-directory-in-install-record-from-pip-mean)
+
 
 
 ## Reference

@@ -139,7 +139,7 @@ def build(ctx: click.Context, env: Any) -> None:
                    "which can be used for imported source file and exported target file or directory. "
                    "The default is the specified file in the current directory.")
 @click.option('--database-type', required=False, default="mysql",
-              type=click.Choice(projects),
+              type=click.Choice(databases),
               help="Specify database type. e.g: mysql, mariadb, postgres.")
 @click.option('--database-version', required=False, default="8.0",
               help="Specify database version. e.g: MySQL(8.0, 5.7), MariaDB(10.6, 11.1), PostgreSQL(15.4, 16.0).")
