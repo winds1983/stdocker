@@ -384,7 +384,12 @@ def create_js_project(ctx: click.Context, platform: Any, project_name: Any, prog
 @click.option('--project-name', required=False,
               callback=check_project_name,
               help="Specify project name.")
-def create_magento_project(ctx: click.Context, version: Any, version_number: Any, source_code_file: Any, project_name: Any) -> None:
+@click.option('--database-type', required=False, default="mysql",
+              help="Specify database type. NOTE: Use docker service name to define the database type, "
+                   "such as mysql, mysql82, mariadb, mariadb106, etc.")
+def create_magento_project(ctx: click.Context,
+                           version: Any, version_number: Any,
+                           source_code_file: Any, project_name: Any, database_type: Any) -> None:
     """Create a new Magento project based on the source code or composer"""
     working_dir = ctx.obj['WORKING_DIR']
     env_handler = EnvHandler(working_dir=working_dir)
@@ -407,7 +412,7 @@ def create_magento_project(ctx: click.Context, version: Any, version_number: Any
 
     command = 'bash bin/create_magento_project.sh ' \
               + current_dir + ' ' + workspace_dir + ' ' + webserver + ' ' + project_name + ' ' \
-              + version_number + ' ' + version
+              + version_number + ' ' + version + ' ' + database_type
     if source_code_file is not None:
         command += ' ' + source_code_file
 
