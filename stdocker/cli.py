@@ -421,7 +421,9 @@ def create_magento_project(ctx: click.Context, version: Any, version_number: Any
 
     command = 'bash bin/create_magento_project.sh ' \
               + current_dir + ' ' + workspace_dir + ' ' + webserver + ' ' + project_name + ' ' \
-              + version_number + ' ' + version + ' ' + database_type + ' ' + database_version
+              + version_number + ' ' + version + ' ' + database_type
+    if database_version is not None:
+        command += ' ' + database_version
     if source_code_file is not None:
         if database_version is not None:
             command += ' ' + source_code_file
