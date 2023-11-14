@@ -150,11 +150,14 @@ class EnvHandler(object):
             # description = item['description']
 
             services_status = []
+
+            # Row header: First column
             if env == current_env:
                 services_status.append(colored(env, 'red'))
             else:
                 services_status.append(env)
 
+            # Row data
             for service in services:
                 status = 'N'
                 if service in item['services'].keys():
@@ -164,6 +167,11 @@ class EnvHandler(object):
                         status = 'N'
                     else:
                         status = item['services'][service]
+
+                    # Convert list to string, e.g: [8.0,5.7] > 8.0,5.7
+                    # https://stackoverflow.com/questions/12053236/python-equivalent-for-phps-implode
+                    if isinstance(type(status), list):
+                        status = ', '.join(status)
 
                 if env == current_env:
                     services_status.append(colored(status, 'red'))
