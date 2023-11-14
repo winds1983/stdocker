@@ -144,7 +144,7 @@ def build(ctx: click.Context, env: Any) -> None:
 @click.option('--database-version', required=False,
               help="Specify database version. e.g: MySQL(8.0, 5.7), MariaDB(10.6, 11.1), PostgreSQL(15.4, 16.0).")
 def database_import(ctx: click.Context, database_name: Any, backup_sql_file: Any, database_type: Any, database_version: Any) -> None:
-    """Export or import database"""
+    """Import database from SQL file"""
     if database_name is None:
         click.echo(click.style(f"ERROR: Invalid database name", fg='red'))
         exit(1)
@@ -168,8 +168,8 @@ def database_import(ctx: click.Context, database_name: Any, backup_sql_file: Any
               help="Specify database type. e.g: mysql, mariadb, postgres.")
 @click.option('--database-version', required=False,
               help="Specify database version. e.g: MySQL(8.0, 5.7), MariaDB(10.6, 11.1), PostgreSQL(15.4, 16.0).")
-def database_export(ctx: click.Context, database_name: Any, backup_sql_file: Any, database_type: Any, database_version: Any) -> None:
-    """Export or import database"""
+def database_export(ctx: click.Context, database_name: Any, database_type: Any, database_version: Any) -> None:
+    """Export database to SQL file"""
     if database_name is None:
         click.echo(click.style(f"ERROR: Invalid database name", fg='red'))
         exit(1)
@@ -177,11 +177,6 @@ def database_export(ctx: click.Context, database_name: Any, backup_sql_file: Any
     command = 'bash bin/export_db.sh ' + database_type + ' ' + database_name + ' ' + current_dir
     if database_version is not None:
         command += ' ' + database_version
-    if backup_sql_file is not None:
-        if database_version is not None:
-            command += ' ' + backup_sql_file
-        else:
-            command += ' "" ' + backup_sql_file
     os.system(command)
 
 
