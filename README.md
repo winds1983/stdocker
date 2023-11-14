@@ -40,7 +40,7 @@ sudo pip3 install stdocker
 
 If you get error `ERROR: Could not find a version that satisfies the requirement`, please use the following command to install:
 ```shell
-python3 -m pip install stdocker==1.2.2
+python3 -m pip install stdocker==1.2.3
 ```
 
 It based on the internal docker project `Shinetech Docker`, please install it first. If you do not have permission to use Shinetech Docker, please ignore this package.
@@ -77,7 +77,8 @@ Commands:
   create-js-project       Create a new Javascript project based on a base...
   create-magento-project  Create a new Magento project based on the...
   create-php-project      Create a new PHP project based on a base...
-  database                Export or import database
+  database-export         Export database to SQL file
+  database-import         Import database from SQL file
   docker-compose          Execute sudo docker-compose * command
   docker-exec             Execute sudo docker exec * command
   docker-run              Execute sudo docker * command
@@ -257,19 +258,27 @@ stdocker build --env=magento_246
 
 ### Export and import database
 
-```shell
-stdocker database <ACTION{import|export}>
-```
-
 #### Export database:
+
+Default to export MySQL database:
 ```shell
-stdocker database export --dbname=test
-stdocker database export --dbname=test --backup-sql-file=test_20220823.sql
+stdocker database-export --database-name=test
+```
+If you want to export other database, you can specify the database type and version:
+```shell
+stdocker database-export --database-name=test --database-type=mariadb --database-version=10.5
 ```
 
 #### Import database:
+
+Default to export MySQL database:
 ```shell
-stdocker database import --dbname=test --backup-sql-file=test_20220823.sql
+stdocker database-import --database-name=test --backup-sql-file=test_20220823.sql
+```
+
+If you want to import other database, you can specify the database type and version:
+```shell
+stdocker database-import --database-name=test --backup-sql-file=test_20220823.sql --database-type=mariadb --database-version=10.5
 ```
 
 ### Show the local environment and workspace information
