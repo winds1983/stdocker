@@ -122,7 +122,7 @@ def configure(ctx: click.Context) -> None:
 
 @cli.command()
 @click.pass_context
-@click.option('--env', default='magento_244',
+@click.option('--env', default='magento_246',
               type=click.Choice(list_env_names(install_dir)),
               help="Build the development environment based on the specified configuration.")
 def build(ctx: click.Context, env: Any) -> None:
