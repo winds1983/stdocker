@@ -6,6 +6,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [1.2.2] - 2023-11-14
+
+### Added
+
+- Split database import and export to independent commands
+- Change default env build to Magento 2.4.6
+- Convert multiple service version list to string for env list
+
+### Fixed
+
+- Fix database version issue for create Magento project
+
+
 ## [1.2.1] - 2023-11-13
 
 ### Fixed
