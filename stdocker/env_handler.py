@@ -170,8 +170,11 @@ class EnvHandler(object):
 
                     # Convert list to string, e.g: [8.0,5.7] > 8.0,5.7
                     # https://stackoverflow.com/questions/12053236/python-equivalent-for-phps-implode
-                    if isinstance(type(status), list):
-                        status = ', '.join(status)
+                    if isinstance(status, list):
+                        # TypeError: sequence item 0: expected str instance, float found
+                        # https://bobbyhadz.com/blog/python-typeerror-sequence-item-0-expected-str-instance-list-found
+                        status_strings = list(map(str, status))
+                        status = ','.join(status_strings)
 
                 if env == current_env:
                     services_status.append(colored(status, 'red'))
