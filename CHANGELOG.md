@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [1.2.5] - 2023-11-17
+
+### Added
+
+- Set dynamic max width according to columns of terminal size for env list
+
+
 ## [1.2.4] - 2023-11-16
 
 ### Added
