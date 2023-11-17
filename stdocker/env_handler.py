@@ -139,8 +139,14 @@ class EnvHandler(object):
                          'MongoDB', 'Mongo Express', 'PostgreSQL', 'Pgweb', 'Memcached', 'Webgrind',
                          'Node', 'Python', 'Golang', '.Net Core', 'Java', 'Ruby', 'C++', 'Rust', 'MSSQL']
 
+        # Set dynamic max width according to columns of terminal size
+        terminal_size = os.get_terminal_size()
+        max_width = 210
+        if terminal_size.columns > max_width:
+            max_width = terminal_size.columns
+
         # Set detect_numerics=False, will make 1.20 display correctly
-        table = BeautifulTable(maxwidth=210, detect_numerics=False)
+        table = BeautifulTable(maxwidth=max_width, detect_numerics=False)
         columns_headers = ['Env Code'] + service_names
 
         env_detail_names = []
