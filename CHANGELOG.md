@@ -11,7 +11,7 @@ project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Fixed
 
 - Fix restart container bugs
-- Fix HTTPError: 400 Bad Request error for twine upload 
+- Fix HTTPError: 400 Bad Request error for twine upload
 
 
 ## [1.2.6] - 2023-12-25
