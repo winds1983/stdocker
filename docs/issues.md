@@ -130,6 +130,43 @@ sudo pip3 install --upgrade setuptools pip
 - [What does a "Could not find .egg-info directory in install record" from pip mean?](https://stackoverflow.com/questions/26091641/what-does-a-could-not-find-egg-info-directory-in-install-record-from-pip-mean)
 
 
+### HTTPError: 403 Forbidden from https://upload.pypi.org/legacy/
+
+```
+WARNING  Error during upload. Retry with the --verbose option for more details.                                                                                                                                                    
+ERROR    HTTPError: 403 Forbidden from https://upload.pypi.org/legacy/                                                                                                                                                             
+         Username/Password authentication is no longer supported. Migrate to API Tokens or Trusted Publishers instead. See https://pypi.org/help/#apitoken and https://pypi.org/help/#trusted-publishers 
+```
+
+#### 1. Create `API Token` and setup config for `.pypirc`
+
+Navigate to [Create API token](https://pypi.org/manage/account/token/),
+
+If you are using Twine to upload your projects to PyPI, set up your `$HOME/.pypirc` file like this:
+```shell
+vim ~/.pypirc
+```
+Add configuration as below:
+```
+[pypi]
+  username = __token__
+  password = <TOKEN STRING>
+```
+
+#### 2. Change twine upload command
+
+Change the old command:
+```shell
+sudo twine upload --repository pypi dist/*
+```
+to:
+```shell
+python3 -m twine upload --repository pypi dist/*
+```
+
+- [What to do when you 403 during pypi twine upload](https://www.swyx.io/pypi-403)
+- [Can't upload to PyPi with Twine](https://stackoverflow.com/questions/46606692/cant-upload-to-pypi-with-twine)
+
 
 ## Reference
 
