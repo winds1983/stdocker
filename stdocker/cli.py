@@ -110,6 +110,7 @@ def restart(ctx: click.Context, service: Any) -> None:
         # sudo docker restart $(docker ps -a -q)
         # sudo docker restart $(docker ps -q)
         # Restart all running containers
+        os.system('bash bin/local_services.sh stop')
         os.system('sudo docker-compose restart')
 
 

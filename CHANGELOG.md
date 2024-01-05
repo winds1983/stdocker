@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [1.2.7] - 2024-01-05
+
+### Fixed
+
+- Fix restart container bugs
+
+
 ## [1.2.6] - 2023-12-25
 
 ### Added
