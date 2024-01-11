@@ -132,12 +132,14 @@ class EnvHandler(object):
                     'phpmyadmin', 'elasticsearch', 'opensearch', 'elasticvue',
                     'redis', 'phpredisadmin', 'rabbitmq', 'mailcatcher',
                     'mongo', 'mongoexpress', 'postgres', 'pgweb', 'memcached', 'webgrind',
-                    'node', 'python', 'golang', 'dotnet', 'java', 'ruby', 'cpp', 'rust', 'mssql', 'sonarqube']
+                    'node', 'python', 'golang', 'dotnet', 'java', 'ruby', 'cpp', 'rust', 'mssql',
+                    'sonarqube', 'stirling_pdf', 'dynamodb', 'dynamodbadmin']
         service_names = ['Web Server', 'PHP', 'MySQL', 'MariaDB',
                          'phpMyAdmin', 'Elasticsearch', 'OpenSearch', 'Elasticvue',
                          'Redis', 'phpRedisAdmin', 'RabbitMQ', 'Mailcatcher',
                          'MongoDB', 'Mongo Express', 'PostgreSQL', 'Pgweb', 'Memcached', 'Webgrind',
-                         'Node', 'Python', 'Golang', '.Net Core', 'Java', 'Ruby', 'C++', 'Rust', 'MSSQL', 'SonarQube']
+                         'Node', 'Python', 'Golang', '.Net Core', 'Java', 'Ruby', 'C++', 'Rust', 'MSSQL',
+                         'SonarQube', 'Stirling PDF', 'Dynamodb', 'Dynamodb Admin']
 
         # Set dynamic max width according to columns of terminal size
         terminal_size = os.get_terminal_size()
